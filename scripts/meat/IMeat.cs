@@ -9,5 +9,5 @@ public interface IMeat
    void FastMove();
    void Automate(Vector2 worldDim);
 
-   void RandomWalk(double delta);
+   void RandomWalk(double delta, Vector2 charPos);
 }

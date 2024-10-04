@@ -33,7 +33,7 @@ public partial class World : Node2D
 				if (!lion.GetSelected())
 				{
 					
-				lion.RandomWalk(delta);
+				lion.RandomWalk(delta, _lionPlayer.Position);
 				}
 				// lion.Automate(new Vector2(Global.WORLD_WIDTH,Global.WORLD_HEIGHT));
 				// /lion.Automate(new Vector2(Global.WORLD_WIDTH,Global.WORLD_HEIGHT));

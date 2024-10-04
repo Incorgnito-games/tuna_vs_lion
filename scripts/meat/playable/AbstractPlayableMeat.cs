@@ -5,7 +5,7 @@ namespace TunaVsLion.scripts.meat.playable;
 
 public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {
-	 private float _baseSpeed = 50.0f;
+	 private float _baseSpeed = 350.0f;
 	 protected int MeatValue = 1;
 	 protected bool Selected = false;
 	 protected double Health = 100;
@@ -73,7 +73,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	}
 
 	//random walk
-	public void RandomWalk(double delta)
+	public void RandomWalk(double delta, Vector2 charPos)
 	{
 		Random random = new Random();
 			 int WALKDISTANCE = random.Next(0,100);
@@ -84,16 +84,16 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 			switch (direction)
 			{
 				case 0: // Up
-					currentPosition.Y += WALKDISTANCE*2;
+					currentPosition.Y += (charPos.Y - WALKDISTANCE*2);
 					break;
 				case 1: // Down
-					currentPosition.Y -= WALKDISTANCE;
+					currentPosition.Y -=(charPos.Y - WALKDISTANCE);
 					break;
 				case 2: // Left
-					currentPosition.X -= WALKDISTANCE;
+					currentPosition.X -=(charPos.X - WALKDISTANCE);
 					break;
 				case 3: // Right
-					currentPosition.X += WALKDISTANCE*2;
+					currentPosition.X +=(charPos.X - WALKDISTANCE*2);
 					break;
 			}
 
