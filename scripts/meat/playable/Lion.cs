@@ -52,18 +52,18 @@ public partial class Lion: AbstractPlayableMeat
 	    // throw new NotImplementedException();
     }
 
-    public override void SlowMove()
-    {
-	    // throw new NotImplementedException();
-    }
+    // public override void SlowMove()
+    // {
+	   //  
+    // }
 
     public override void FastMove()
     {
 	    // throw new NotImplementedException();
     }
 
-    public override void Automate()
-    {
-	  
-    }
+    // public override void Automate()
+    // {
+	   //
+    // }
 }

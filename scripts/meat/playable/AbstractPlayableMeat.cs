@@ -1,17 +1,20 @@
 using Godot;
-
+using System;
 
 namespace TunaVsLion.scripts.meat.playable;
 
 public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {
-	 private float _baseSpeed = 300.0f;
+	 private float _baseSpeed = 50.0f;
 	 protected int MeatValue = 1;
 	 protected bool Selected = false;
 	 protected double Health = 100;
 
-	
-	 
+
+
+	 public bool GetSelected()
+	 {
+		 return Selected;}
 	 public abstract void SetSelected(bool isSelected);
 	 
 	public override void _PhysicsProcess(double delta)
@@ -43,9 +46,57 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 
 	public abstract void Spawn();
 
-	public abstract void SlowMove();
+	public void SlowMove(Vector2 direction)
+	{
+		Vector2 velocity = Velocity;
+
+		if (direction != Vector2.Zero)
+		{
+			velocity.Y = direction.Y * _baseSpeed/2;
+			velocity.X = direction.X * _baseSpeed/2;
+		}
+		else
+		{
+			velocity.X = Mathf.MoveToward(Velocity.X, 0, _baseSpeed/2);
+			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, _baseSpeed/2);
+		}
+
+		Velocity = velocity;
+		MoveAndSlide();
+	}
 
 	public abstract void FastMove();
 
-	public abstract void Automate();
+	public void Automate(Vector2 worldDim)
+	{
+		// throw new NotImplementedException();
+	}
+
+	//random walk
+	public void RandomWalk(double delta)
+	{
+		Random random = new Random();
+			 int WALKDISTANCE = random.Next(0,100);
+			
+			int direction = random.Next(4);
+
+			var currentPosition = Position;
+			switch (direction)
+			{
+				case 0: // Up
+					currentPosition.Y += WALKDISTANCE*2;
+					break;
+				case 1: // Down
+					currentPosition.Y -= WALKDISTANCE;
+					break;
+				case 2: // Left
+					currentPosition.X -= WALKDISTANCE;
+					break;
+				case 3: // Right
+					currentPosition.X += WALKDISTANCE*2;
+					break;
+			}
+
+			Position = Position.MoveToward(currentPosition, _baseSpeed * (float)delta);
+	}
 }
