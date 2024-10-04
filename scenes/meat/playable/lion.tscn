@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://s84jfjg8lrf3"]
+
+[ext_resource type="Script" path="res://scripts/meat/playable/Lion.cs" id="1_jq37j"]
+[ext_resource type="Texture2D" uid="uid://xclf01hpt8tv" path="res://assets/sprites/lion_proto.jpg" id="2_2ai1q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ee3uo"]
+size = Vector2(22.5, 23)
+
+[node name="lionPlayer" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_jq37j")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.500002, -0.500002)
+scale = Vector2(0.103, 0.1)
+texture = ExtResource("2_2ai1q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.75, -0.5)
+shape = SubResource("RectangleShape2D_ee3uo")

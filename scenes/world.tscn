@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvjumi8snsj3m"]
+
+[ext_resource type="Script" path="res://scripts/World.cs" id="1_antui"]
+[ext_resource type="PackedScene" uid="uid://s84jfjg8lrf3" path="res://scenes/meat/playable/lion.tscn" id="2_10nqv"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_antui")
+
+[node name="lionPlayer" parent="." instance=ExtResource("2_10nqv")]
+position = Vector2(447, 287)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(0, 0, 0, 650, 1155, 650, 1151, 1, 0, 0, -2, -2, 0, -1, 1212, -45, 1212, 680, -50, 702)
