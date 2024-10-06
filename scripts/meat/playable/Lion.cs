@@ -10,9 +10,20 @@ public partial class Lion: AbstractPlayableMeat
     [Export] public int HideLevel = 1;
     [Export] public int ClimbLevel = 1;
     [Export] public int SwimLevel = 1;
+
+    private string _name;
+
+    public string GetLionName()
+    {
+	    return this._name;
+    }
+
+    public void SetLionName(string name)
+    { 
+	    this._name = name;
+    }
     
     
-	
     public void Initialize(int meatValue, double health)
     {
 	    base.MeatValue = meatValue;

@@ -5,12 +5,31 @@ namespace TunaVsLion.scripts.meat.playable;
 
 public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {
-	 private float _baseSpeed = 350.0f;
+	 private float _baseSpeed = 100.0f;
+	 private float _slowSpeed = 25.0f;
 	 protected int MeatValue = 1;
 	 protected bool Selected = false;
 	 protected double Health = 100;
+	 private Vector2 _bearing;
+	 private double _moveTimer;
+	 
+	
+	 
+	 private Rect2 GetCollisionRect()
+	 {
+		 var collisionBodyNode = GetNode<CollisionShape2D>("/CollisionShap2D");
+			
+		 return collisionBodyNode.GetShape().GetRect();
+	 }
+	
 
-
+	 /*
+	  * return vector containing character size Vector2(width,height)
+	  */
+	 private Vector2 GetCharacterDimensions()
+	 {
+		 return GetCollisionRect().Size;
+	 }
 
 	 public bool GetSelected()
 	 {
@@ -21,13 +40,13 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	{
 		if (Selected)
 		{
-			CharacterControls(delta);
+			CharacterControls();
 		}
 	}
-	void CharacterControls(double delta){
-		Vector2 velocity = Velocity;
+	private void CharacterControls(){
+		var velocity = Velocity;
 
-		Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+		var direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		if (direction != Vector2.Zero)
 		{
 			velocity.Y = direction.Y * _baseSpeed;
@@ -35,8 +54,8 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		}
 		else
 		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, _baseSpeed);
-			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, _baseSpeed);
+			velocity.X = Mathf.MoveToward(Velocity.X, 0, _baseSpeed );
+			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, _baseSpeed );
 		}
 
 		Velocity = velocity;
@@ -46,57 +65,47 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 
 	public abstract void Spawn();
 
-	public void SlowMove(Vector2 direction)
+	public void SlowMove(double delta)
 	{
-		Vector2 velocity = Velocity;
-
-		if (direction != Vector2.Zero)
+		Vector2 currentVel = Velocity;
+		if (_bearing != Vector2.Zero)
 		{
-			velocity.Y = direction.Y * _baseSpeed/2;
-			velocity.X = direction.X * _baseSpeed/2;
+			currentVel.Y = _bearing.Y * _slowSpeed;
+			currentVel.X = _bearing.X * _slowSpeed;
 		}
-		else
-		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, _baseSpeed/2);
-			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, _baseSpeed/2);
-		}
-
-		Velocity = velocity;
+		// Position += _bearing;
+		Velocity = currentVel;
 		MoveAndSlide();
 	}
 
 	public abstract void FastMove();
 
-	public void Automate(Vector2 worldDim)
+	public void Automate(Vector2 worldDim) { }
+	
+	
+	public void OnBearingTimerTimeout()
 	{
-		// throw new NotImplementedException();
+		this.SetRandomBearing();
 	}
-
 	//random walk
-	public void RandomWalk(double delta, Vector2 charPos)
+	public void SetRandomBearing()
 	{
-		Random random = new Random();
-			 int WALKDISTANCE = random.Next(0,100);
+		var random = new Random(); 
 			
-			int direction = random.Next(4);
+			var direction = random.Next(10);
 
-			var currentPosition = Position;
-			switch (direction)
+			_bearing = direction switch
 			{
-				case 0: // Up
-					currentPosition.Y += (charPos.Y - WALKDISTANCE*2);
-					break;
-				case 1: // Down
-					currentPosition.Y -=(charPos.Y - WALKDISTANCE);
-					break;
-				case 2: // Left
-					currentPosition.X -=(charPos.X - WALKDISTANCE);
-					break;
-				case 3: // Right
-					currentPosition.X +=(charPos.X - WALKDISTANCE*2);
-					break;
-			}
+				0 => new Vector2(0, -1), //up
+				1 => new Vector2(0, 1), //down
+				2 => new Vector2(-1, 0), //left
+				3 => new Vector2(1, 0), //right
+				4 => new Vector2(-1, -1), //up-left
+				5 => new Vector2(1, -1), //up-right
+				6 => new Vector2(-1, 1), //down-left
+				7 => new Vector2(1, 1), //down-right
+				_ => new Vector2(0, 0)
+			};
 
-			Position = Position.MoveToward(currentPosition, _baseSpeed * (float)delta);
 	}
 }
