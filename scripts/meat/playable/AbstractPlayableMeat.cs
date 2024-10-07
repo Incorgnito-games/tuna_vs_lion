@@ -7,7 +7,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {
 	//Character Fields
 	protected int MeatValue = 1;
-	private float _baseSpeed = 300.0f;
+	public float BaseSpeed = 300.0f;
 	private float _slowSpeed = 3500.0f;
 	
 	//Mechanic Fields
@@ -17,9 +17,9 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	//Physics Fields
 	private Vector2 _bearing;
 	public Vector2 newDir;
+	public Vector2 newPos;
 	
 	//Debug Fields
-	public ColorRect newMoveMarker;
 
 	 
 	//**************************
@@ -39,13 +39,13 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		var direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		if (direction != Vector2.Zero)
 		{
-			velocity.Y = direction.Y * _baseSpeed;
-			velocity.X = direction.X * _baseSpeed;
+			velocity.Y = direction.Y * BaseSpeed;
+			velocity.X = direction.X * BaseSpeed;
 		}
 		else
 		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, _baseSpeed );
-			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, _baseSpeed );
+			velocity.X = Mathf.MoveToward(Velocity.X, 0, BaseSpeed );
+			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, BaseSpeed );
 		}
 		Velocity = velocity;
 		MoveAndSlide();

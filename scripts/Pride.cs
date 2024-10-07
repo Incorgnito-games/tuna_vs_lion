@@ -10,6 +10,7 @@ public partial class Pride : Node2D
 	//Mechanics Fields
 	private double _prideRadius;
 	private CollisionShape2D _prideInfluence;
+	private Vector2 _prideLeaderPos;
 	
 	//Character Fields
 	private Vector2 _initialPlayerPos;
@@ -18,13 +19,20 @@ public partial class Pride : Node2D
 	
 	//Utility Fields
 	private readonly Random _rand = new Random();
+	private Timer positionChangeTimer = new Timer();
+	
+	
+	
+	//Debug
 	
 	//**************************
 	// Setup
 	//**************************
 	public override void _Ready()
 	{
+		
 		 _lionPlayer = GetNode<Lion>("lionPlayer");
+		 _prideLeaderPos = _lionPlayer.Position;
 		 _prideInfluence =
 			 GetNode<CollisionShape2D>("lionPlayer/Area2D/CollisionShape2D");
 		 _prideRadius = ((CircleShape2D)_prideInfluence.Shape).Radius;
@@ -35,41 +43,20 @@ public partial class Pride : Node2D
 		_lionPlayer.SetSelected(true);
 		_initialPlayerPos = _lionPlayer.Position;
 		
-		//attempt to prevent identical start locations for lion nodes
-		var randCoord = new HashSet<Vector2>();
-
-		//used for debuging
-		string[] lionNames = { "john", "joe", "jack", "maya", "arthur", "suzy", "sarah", "sam", "puma", "Maya2" };
+		//Timer Setup
+		positionChangeTimer.SetAutostart(true);
+		positionChangeTimer.SetWaitTime(2);
+		positionChangeTimer.Timeout += OnPrideMemberMovementTimeout;
+		AddChild(positionChangeTimer);
 		
+		//pride setup
 		for (var i = 0; i < 5; i++)
 		{
-			//pride setup
 			_lionPride.Add((Lion)ResourceLoader.Load<PackedScene>("res://scenes/meat/playable/lion.tscn").Instantiate());
 			_lionPride[i].SetSelected(false);
-			_lionPride[i].SetRandomBearing();
-			
-			//Timer for pride members location change
-			var prideTimer = new Timer();
-			prideTimer.SetAutostart(true);
-			prideTimer.WaitTime = 2.0f;
-			prideTimer.Timeout += OnPrideMemberMovementTimeout;
-			AddChild(prideTimer);
-
-			//assign random position for pride member
-			randCoord.Add(GetRandomPointInPrideInfluence(new Vector2(0,0)));
-			//set name for debugging from predefined list
-			_lionPride[i].SetLionName(lionNames[i]);
-			
-		}
-		
-		var index = 0;
-		foreach(var coord in randCoord)
-		{
-			//assign initial starting coord and add member to scene
-			_lionPride[index].Position = coord;
-			AddChild(_lionPride[index]);
-				
-			index++;
+			_lionPride[i].Position = GetRandomPointInPrideInfluence();
+			_lionPride[i].newPos = GetRandomPointInPrideInfluence();
+			AddChild(_lionPride[i]);
 		}
 		
 	}
@@ -79,13 +66,20 @@ public partial class Pride : Node2D
 	//*****************************
 	public override void _PhysicsProcess(double delta)
 	{
+	
+		_prideLeaderPos = _lionPlayer.Position;
 		foreach(var lion in _lionPride)
 		{
 			if (!lion.GetSelected()) //not currently selected as player memebr
 			{
-				var newVel = lion.newDir * (float)delta * 3500;
-				lion.Velocity = newVel;
+				var lionDirection = lion.newPos - lion.Position; // this was just a shitty example of bugs with
+				// vector math, having a general understanding would pay divedents in the long run ....
+				lion.Velocity = lionDirection * 50 * (float)delta;
 				lion.MoveAndSlide();
+				if(lion.Position.DistanceTo(lion.newPos) < 10f){	
+					lion.newPos = GetRandomPointInPrideInfluence();
+				}
+				
 			}
 		}
 	}
@@ -93,14 +87,21 @@ public partial class Pride : Node2D
 	//*************************
 	// Mechanic Logic
 	//*************************
-	public Vector2 GetRandomPointInPrideInfluence(Vector2 offset)
+	public Vector2 GetRandomPointInPrideInfluence()
 	{
-			var angle = GD.Randf() * Mathf.Pi * 2;
-			var r = Mathf.Sqrt(GD.Randf()) * (float)_prideRadius;
-			var x = r * Mathf.Cos(angle);
-			var y = r * Mathf.Sin(angle);
+		//uniform random distribution of circles radius
+		var uniformRandRadius = Mathf.Sqrt( GD.RandRange(0, (_prideRadius * _prideRadius)));
+		//random angle in radians (0 - 2pi)
+		var randAngle = GD.RandRange(0, 2 * Mathf.Pi);
 
-			return offset + new Vector2(_lionPlayer.Position.X + x, _lionPlayer.Position.Y + y);
+		var randPoint = new Vector2();
+
+		//w/o center --> (old)this is assuming the cdnter of the pride influende is (0,0) aka center of local scene
+		//w/ center --> (current)using player as centerpoint via prideLeader
+		randPoint.X = _prideLeaderPos.X + (float)(uniformRandRadius * Mathf.Cos(randAngle));
+		randPoint.Y = _prideLeaderPos.Y + (float)(uniformRandRadius * Mathf.Sin(randAngle));
+
+		return randPoint;
 	}
 	
 	//*********************
@@ -108,20 +109,6 @@ public partial class Pride : Node2D
 	//*********************
 	public void OnPrideMemberMovementTimeout()
 	{
-		foreach(var lion in _lionPride)
-		{
-			var newPos = GetRandomPointInPrideInfluence(_prideInfluence.GlobalPosition);
-
-			lion.newDir = (newPos - lion.GlobalPosition).Normalized();
-			if (lion.newMoveMarker != null)
-			{
-				lion.newMoveMarker.Free();
-			}
-			lion.newMoveMarker = new ColorRect();
-			lion.newMoveMarker.Size = new Vector2(5, 5);
-			lion.newMoveMarker.Color = new Color(1, 0, 0);
-			lion.newMoveMarker.Position = newPos;
-			lion.AddChild(lion.newMoveMarker);
-		}
+		
 	}
 }
