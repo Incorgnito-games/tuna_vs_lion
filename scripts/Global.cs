@@ -1,7 +1,9 @@
 namespace TunaVsLion.scripts;
-
+using Godot;
 public class Global
 {
-    public const int WORLD_WIDTH = 1156;
-    public const int WORLD_HEIGHT = 628;
+    public int WORLD_WIDTH = DisplayServer.ScreenGetSize().X;
+    public  int WORLD_HEIGHT = DisplayServer.ScreenGetSize().Y;
+
+
 }

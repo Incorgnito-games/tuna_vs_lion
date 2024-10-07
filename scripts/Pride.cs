@@ -68,20 +68,26 @@ public partial class Pride : Node2D
 	{
 	
 		_prideLeaderPos = _lionPlayer.Position;
+		makePrideMemberMovements(delta);
+	}
+
+	private void makePrideMemberMovements(double delta)
+	{
 		foreach(var lion in _lionPride)
 		{
 			if (!lion.GetSelected()) //not currently selected as player memebr
 			{
-				var lionDirection = lion.newPos - lion.Position; // this was just a shitty example of bugs with
-				// vector math, having a general understanding would pay divedents in the long run ....
-				lion.Velocity = lionDirection * 50 * (float)delta;
+				
+				var lionDirection = lion.newPos - lion.Position; 
+				lion.Velocity = lionDirection * (lion.BaseSpeed / 4) * (float)delta;
+				
 				lion.MoveAndSlide();
 				if(lion.Position.DistanceTo(lion.newPos) < 10f){	
 					lion.newPos = GetRandomPointInPrideInfluence();
 				}
-				
 			}
 		}
+		
 	}
 	
 	//*************************

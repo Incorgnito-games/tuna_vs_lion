@@ -7,8 +7,8 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {
 	//Character Fields
 	protected int MeatValue = 1;
-	public float BaseSpeed = 300.0f;
-	private float _slowSpeed = 3500.0f;
+	public float BaseSpeed = 100.0f;
+	private float _slowSpeed = 50.0f;
 	
 	//Mechanic Fields
 	protected bool Selected = false;
@@ -64,41 +64,8 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		MoveAndSlide();
 	}
 
-	//********************************
-	// Mechanic Logic
-	//********************************
 
-	public void Automate(Vector2 worldDim) { }
-	
-	public void SetRandomBearing()
-	{
-		var random = new Random(); 
-			
-			var direction = random.Next(10);
 
-			_bearing = direction switch
-			{
-				0 => new Vector2(0, -1), //up
-				1 => new Vector2(0, 1), //down
-				2 => new Vector2(-1, 0), //left
-				3 => new Vector2(1, 0), //right
-				4 => new Vector2(-1, -1), //up-left
-				5 => new Vector2(1, -1), //up-right
-				6 => new Vector2(-1, 1), //down-left
-				7 => new Vector2(1, 1), //down-right
-				_ => new Vector2(0, 0)
-			};
-
-	}
-	//**************************
-	// Signal Callbacks
-	//**************************
-	
-	public void OnBearingTimerTimeout()
-	{
-		this.SetRandomBearing();
-	}
-	
 	//**************************
 	// Abstract Methods
 	//**************************
