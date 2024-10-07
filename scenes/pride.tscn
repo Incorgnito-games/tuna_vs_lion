@@ -4,8 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://s84jfjg8lrf3" path="res://scenes/meat/playable/lion.tscn" id="1_uxq6p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_x30rw"]
+radius = 100.0
 
 [node name="pride" type="Node2D"]
+position = Vector2(-2, 0)
 script = ExtResource("1_jutkc")
 
 [node name="lionPlayer" parent="." instance=ExtResource("1_uxq6p")]
@@ -18,6 +20,5 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="lionPlayer/Area2D"]
 position = Vector2(447, 288)
-scale = Vector2(20, 20)
 shape = SubResource("CircleShape2D_x30rw")
 debug_color = Color(0.798825, 0.419343, 0.117152, 0.42)

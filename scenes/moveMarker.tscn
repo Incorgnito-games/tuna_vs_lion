@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dyb4j7dk65qo2"]
+
+[node name="moveMarker" type="Node2D"]
+
+[node name="Marker2D" type="Marker2D" parent="."]

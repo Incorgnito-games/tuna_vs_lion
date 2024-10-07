@@ -7,78 +7,121 @@ namespace TunaVsLion.scripts;
 
 public partial class Pride : Node2D
 {
-	[Export] private int _prideRadius;
-	private Lion _lionPlayer;
+	//Mechanics Fields
+	private double _prideRadius;
 	private CollisionShape2D _prideInfluence;
-	private readonly List<Lion> _lionPride = new List<Lion>();
-	private Random _rand = new Random();
-	private Vector2 _initialPlayerPos;
 	
+	//Character Fields
+	private Vector2 _initialPlayerPos;
+	private Lion _lionPlayer;
+	private readonly List<Lion> _lionPride = new List<Lion>();
+	
+	//Utility Fields
+	private readonly Random _rand = new Random();
+	
+	//**************************
+	// Setup
+	//**************************
 	public override void _Ready()
 	{
 		 _lionPlayer = GetNode<Lion>("lionPlayer");
-		 _prideInfluence = GetNode<CollisionShape2D>("lionPlayer/Area2D/CollisionShape2D");
-		 
+		 _prideInfluence =
+			 GetNode<CollisionShape2D>("lionPlayer/Area2D/CollisionShape2D");
+		 _prideRadius = ((CircleShape2D)_prideInfluence.Shape).Radius;
 		_Initiate();
 	}
-
-	public override void _Process(double delta)
-	{
-	}
-
-	public override void _PhysicsProcess(double delta)
-	{
-		//fired 60 times a second
-
-		foreach(var lion in _lionPride)
-		{
-			if (!lion.GetSelected())
-			{
-				lion.SlowMove(delta);	
-			}
-		}
-	}
-	
-	
-	//TODO: fix overlap
 	private void _Initiate()
 	{
 		_lionPlayer.SetSelected(true);
 		_initialPlayerPos = _lionPlayer.Position;
-		_prideInfluence.
-		HashSet<Vector2> randCoord = new HashSet<Vector2>();
+		
+		//attempt to prevent identical start locations for lion nodes
+		var randCoord = new HashSet<Vector2>();
 
+		//used for debuging
 		string[] lionNames = { "john", "joe", "jack", "maya", "arthur", "suzy", "sarah", "sam", "puma", "Maya2" };
+		
 		for (var i = 0; i < 5; i++)
 		{
+			//pride setup
 			_lionPride.Add((Lion)ResourceLoader.Load<PackedScene>("res://scenes/meat/playable/lion.tscn").Instantiate());
 			_lionPride[i].SetSelected(false);
 			_lionPride[i].SetRandomBearing();
-			var bearingTimer = new Timer();
-			bearingTimer.SetAutostart(true);
-			bearingTimer.WaitTime = 0.5f;
-			bearingTimer.Timeout += _lionPride[i].OnBearingTimerTimeout;
-			AddChild(bearingTimer);
 			
-			
-			
-			randCoord.Add(new Vector2(_lionPlayer.Position.X + _rand.Next(-150, 150),
-				_lionPlayer.Position.Y + _rand.Next(-150, 150)));
-		
+			//Timer for pride members location change
+			var prideTimer = new Timer();
+			prideTimer.SetAutostart(true);
+			prideTimer.WaitTime = 2.0f;
+			prideTimer.Timeout += OnPrideMemberMovementTimeout;
+			AddChild(prideTimer);
+
+			//assign random position for pride member
+			randCoord.Add(GetRandomPointInPrideInfluence(new Vector2(0,0)));
+			//set name for debugging from predefined list
 			_lionPride[i].SetLionName(lionNames[i]);
 			
-			 // _lionPride[i].GetNode<Sprite2D>("lionPlayer/Sprite2D").Modulate = new Color(1, 0, 0 ,0.5f);
 		}
-
-		int index = 0;
-		foreach(Vector2 coord in randCoord)
+		
+		var index = 0;
+		foreach(var coord in randCoord)
 		{
+			//assign initial starting coord and add member to scene
 			_lionPride[index].Position = coord;
 			AddChild(_lionPride[index]);
 				
 			index++;
-
 		}
 		
+	}
+	
+	//*****************************
+	//Physics
+	//*****************************
+	public override void _PhysicsProcess(double delta)
+	{
+		foreach(var lion in _lionPride)
+		{
+			if (!lion.GetSelected()) //not currently selected as player memebr
+			{
+				var newVel = lion.newDir * (float)delta * 3500;
+				lion.Velocity = newVel;
+				lion.MoveAndSlide();
+			}
+		}
+	}
+	
+	//*************************
+	// Mechanic Logic
+	//*************************
+	public Vector2 GetRandomPointInPrideInfluence(Vector2 offset)
+	{
+			var angle = GD.Randf() * Mathf.Pi * 2;
+			var r = Mathf.Sqrt(GD.Randf()) * (float)_prideRadius;
+			var x = r * Mathf.Cos(angle);
+			var y = r * Mathf.Sin(angle);
+
+			return offset + new Vector2(_lionPlayer.Position.X + x, _lionPlayer.Position.Y + y);
+	}
+	
+	//*********************
+	// Signals Callbacks
+	//*********************
+	public void OnPrideMemberMovementTimeout()
+	{
+		foreach(var lion in _lionPride)
+		{
+			var newPos = GetRandomPointInPrideInfluence(_prideInfluence.GlobalPosition);
+
+			lion.newDir = (newPos - lion.GlobalPosition).Normalized();
+			if (lion.newMoveMarker != null)
+			{
+				lion.newMoveMarker.Free();
+			}
+			lion.newMoveMarker = new ColorRect();
+			lion.newMoveMarker.Size = new Vector2(5, 5);
+			lion.newMoveMarker.Color = new Color(1, 0, 0);
+			lion.newMoveMarker.Position = newPos;
+			lion.AddChild(lion.newMoveMarker);
+		}
 	}
 }

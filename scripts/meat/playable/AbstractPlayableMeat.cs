@@ -5,36 +5,26 @@ namespace TunaVsLion.scripts.meat.playable;
 
 public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {
-	 private float _baseSpeed = 100.0f;
-	 private float _slowSpeed = 25.0f;
-	 protected int MeatValue = 1;
-	 protected bool Selected = false;
-	 protected double Health = 100;
-	 private Vector2 _bearing;
-	 private double _moveTimer;
-	 
+	//Character Fields
+	protected int MeatValue = 1;
+	private float _baseSpeed = 300.0f;
+	private float _slowSpeed = 3500.0f;
 	
-	 
-	 private Rect2 GetCollisionRect()
-	 {
-		 var collisionBodyNode = GetNode<CollisionShape2D>("/CollisionShap2D");
-			
-		 return collisionBodyNode.GetShape().GetRect();
-	 }
+	//Mechanic Fields
+	protected bool Selected = false;
+	private double _moveTimer;
 	
+	//Physics Fields
+	private Vector2 _bearing;
+	public Vector2 newDir;
+	
+	//Debug Fields
+	public ColorRect newMoveMarker;
 
-	 /*
-	  * return vector containing character size Vector2(width,height)
-	  */
-	 private Vector2 GetCharacterDimensions()
-	 {
-		 return GetCollisionRect().Size;
-	 }
-
-	 public bool GetSelected()
-	 {
-		 return Selected;}
-	 public abstract void SetSelected(bool isSelected);
+	 
+	//**************************
+	// Physics
+	//**************************
 	 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -57,14 +47,10 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, _baseSpeed );
 			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, _baseSpeed );
 		}
-
 		Velocity = velocity;
 		MoveAndSlide();
-		
 	}
-
-	public abstract void Spawn();
-
+	
 	public void SlowMove(double delta)
 	{
 		Vector2 currentVel = Velocity;
@@ -78,16 +64,12 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		MoveAndSlide();
 	}
 
-	public abstract void FastMove();
+	//********************************
+	// Mechanic Logic
+	//********************************
 
 	public void Automate(Vector2 worldDim) { }
 	
-	
-	public void OnBearingTimerTimeout()
-	{
-		this.SetRandomBearing();
-	}
-	//random walk
 	public void SetRandomBearing()
 	{
 		var random = new Random(); 
@@ -108,4 +90,57 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 			};
 
 	}
+	//**************************
+	// Signal Callbacks
+	//**************************
+	
+	public void OnBearingTimerTimeout()
+	{
+		this.SetRandomBearing();
+	}
+	
+	//**************************
+	// Abstract Methods
+	//**************************
+	
+	public abstract void FastMove();
+	public abstract void Spawn();
+	 public abstract void SetSelected(bool isSelected);
+	
+	//***************************
+	//Getters + Setters
+	//***************************
+	 public void SetBearing(Vector2 newBearing)
+	 {
+		 this._bearing = newBearing;
+	 }
+
+	 public Vector2 GetBearing()
+	 {
+		 return this._bearing;
+	 }
+	 
+	 private Rect2 GetCollisionRect()
+	 {
+		 var collisionBodyNode = GetNode<CollisionShape2D>("/CollisionShap2D");
+			
+		 return collisionBodyNode.GetShape().GetRect();
+	 }
+	
+
+	 /*
+	  * return vector containing character size Vector2(width,height)
+	  */
+	 private Vector2 GetCharacterDimensions()
+	 {
+		 return GetCollisionRect().Size;
+	 }
+
+	 public bool GetSelected()
+	 {
+		 return Selected;
+		 
+	 }
+	 
+	 
 }
