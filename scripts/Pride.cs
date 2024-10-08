@@ -7,6 +7,9 @@ namespace TunaVsLion.scripts;
 
 public partial class Pride : Node2D
 {
+	//Component Fields
+	[Export] public int prideSize = 2;
+	
 	//Mechanics Fields
 	private double _prideRadius;
 	private CollisionShape2D _prideInfluence;
@@ -50,7 +53,7 @@ public partial class Pride : Node2D
 		AddChild(positionChangeTimer);
 		
 		//pride setup
-		for (var i = 0; i < 5; i++)
+		for (var i = 0; i < prideSize; i++)
 		{
 			_lionPride.Add((Lion)ResourceLoader.Load<PackedScene>("res://scenes/meat/playable/lion.tscn").Instantiate());
 			_lionPride[i].SetSelected(false);

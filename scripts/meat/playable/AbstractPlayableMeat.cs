@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using TunaVsLion.scripts.components;
 
 namespace TunaVsLion.scripts.meat.playable;
 
@@ -19,12 +20,31 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	public Vector2 newDir;
 	public Vector2 newPos;
 	
+	//Signal Fields
+	private AttackBox attackBox;
+
+	private DetectionArea detectionArea;
 	//Debug Fields
 
-	 
+	
+	
+	//**************************
+	// Setup
+	//**************************
+	public override void _Ready()
+	{
+		// attackBox = GetNode<AttackBox>("AttackBox");
+			// detectionArea = GetNode<DetectionArea>("DetectionArea");
+		// attackBox.BodyEntered += attackBox.OnAttackBoxBodyEntered;
+		// detectionArea.BodyEntered += detectionArea.OnDetectionAreaEntered;
+	}
+	
+	
 	//**************************
 	// Physics
 	//**************************
+	
+	
 	 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -110,4 +130,9 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	 }
 	 
 	 
+	 
+	 //****************************
+	 // Signal Callbacks
+	 //****************************
+	
 }

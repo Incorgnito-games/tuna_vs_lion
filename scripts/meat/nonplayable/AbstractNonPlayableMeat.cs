@@ -9,6 +9,7 @@ public abstract class AbstractNonPlayableMeat: IMeat
     private int currentPop = 0;
     private Vector2 _bearing;
     private Vector2 _startingPos;
+   
     
     public void Spawn()
     {
@@ -68,5 +69,8 @@ public abstract class AbstractNonPlayableMeat: IMeat
     {
         this.SetRandomBearing();
     }
+  
+    
+      
     
 }
