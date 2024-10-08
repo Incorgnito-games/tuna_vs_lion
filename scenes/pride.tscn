@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://s84jfjg8lrf3" path="res://scenes/meat/playable/lion.tscn" id="1_uxq6p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_x30rw"]
-radius = 248.008
+radius = 204.01
 
 [node name="pride" type="Node2D"]
 position = Vector2(-2, 0)

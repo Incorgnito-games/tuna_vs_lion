@@ -99,8 +99,8 @@ public partial class Pride : Node2D
 			if (!lion.GetSelected()) //not currently selected as player memebr
 			{
 				
-				var lionDirection = lion.newPos - lion.Position; 
-				lion.Velocity = lionDirection * (lion.BaseSpeed / 4) * (float)delta;
+				var lionDirection = (lion.newPos - lion.Position).Normalized();
+				lion.Velocity = lionDirection * lion.BaseSpeed/2; 
 				
 				lion.MoveAndSlide();
 				if(lion.Position.DistanceTo(lion.newPos) < 10f){	

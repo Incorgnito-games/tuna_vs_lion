@@ -11,7 +11,7 @@ public partial class Lion: AbstractPlayableMeat
     [Export] public int HideLevel = 1;
     [Export] public int ClimbLevel = 1;
     [Export] public int SwimLevel = 1;
-	[Export] public double Health = 100;
+	[Export] public double Health ;
 
 	//Debug Fields
     private string _name;
