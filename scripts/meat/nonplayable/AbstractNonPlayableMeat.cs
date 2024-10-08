@@ -2,10 +2,11 @@ using Godot;
 
 namespace TunaVsLion.scripts.meat.nonplayable;
 
-public abstract class AbstractNonPlayableMeat: IMeat
+public abstract partial class AbstractNonPlayableMeat: RigidBody2D, IMeat
 {
 
     [Export] public int maxPopulation = 50;
+    [Export] public double baseSpeed = 20;
     private int currentPop = 0;
     private Vector2 _bearing;
 
@@ -24,10 +25,7 @@ public abstract class AbstractNonPlayableMeat: IMeat
 
     private void _initiate()
     {
-        for(var i = 0; i < this.maxPopulation; i++)
-        {
-            Spawn();
-        }
+      
         
     }
     public void SlowMove(double delta)
