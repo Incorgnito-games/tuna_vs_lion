@@ -8,9 +8,11 @@ public abstract class AbstractNonPlayableMeat: IMeat
     [Export] public int maxPopulation = 50;
     private int currentPop = 0;
     private Vector2 _bearing;
-    private Vector2 _startingPos;
-   
-    
+
+    public virtual string toString()
+    {
+        return "NonplayableMeat";
+    }
     public void Spawn()
     {
         if (currentPop < maxPopulation)

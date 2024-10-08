@@ -9,21 +9,30 @@ public partial class Pride : Node2D
 {
 	//Component Fields
 	[Export] public int prideSize = 2;
-	
+
 	//Mechanics Fields
 	private double _prideRadius;
 	private CollisionShape2D _prideInfluence;
 	private Vector2 _prideLeaderPos;
-	
+
 	//Character Fields
 	private Vector2 _initialPlayerPos;
 	private Lion _lionPlayer;
 	private readonly List<Lion> _lionPride = new List<Lion>();
-	
+
 	//Utility Fields
 	private readonly Random _rand = new Random();
 	private Timer positionChangeTimer = new Timer();
-	
+	private string[] _debugNames = {
+		"lucy",
+		"bob",
+		"sarah",
+		"chuck",
+		"Christine",
+		"Paul",
+		"nancy",
+		"puma"
+	};
 	
 	
 	//Debug
@@ -43,6 +52,7 @@ public partial class Pride : Node2D
 	}
 	private void _Initiate()
 	{
+		_lionPlayer.SetLionName("Player");
 		_lionPlayer.SetSelected(true);
 		_initialPlayerPos = _lionPlayer.Position;
 		
@@ -60,6 +70,14 @@ public partial class Pride : Node2D
 			_lionPride[i].Position = GetRandomPointInPrideInfluence();
 			_lionPride[i].newPos = GetRandomPointInPrideInfluence();
 			AddChild(_lionPride[i]);
+			try
+			{
+				_lionPride[i].SetLionName(_debugNames[i]);
+				
+			}catch (IndexOutOfRangeException e)
+			{
+				_lionPride[i].SetLionName(i.ToString());
+			}
 		}
 		
 	}

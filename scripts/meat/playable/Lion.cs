@@ -1,5 +1,5 @@
 
-using System;
+using TunaVsLion.scripts.components;
 using Godot;
 
 namespace TunaVsLion.scripts.meat.playable;
@@ -15,20 +15,37 @@ public partial class Lion: AbstractPlayableMeat
 
 	//Debug Fields
     private string _name;
+	private Label nameLabel;
     
     //**************************
     // Setup
     //**************************
-    public void Initialize(int meatValue)
+
+    public override void _Ready()
     {
-	    base.MeatValue = meatValue;
+	    attackBox = GetNode<AttackBox>("AttackBox");
+	    detectionArea = GetNode < DetectionArea>("DetectionArea");
+	    nameLabel = GetNode<Label>("nameLabel");
+	    
+			nameLabel.Text = _name;
+	    
+
+	    attackBox.BodyEntered += OnAttackBoxBodyEntered;
+	    detectionArea.BodyEntered += OnDetectionAreaBodyEntered; 
+	    Initialize(); 
+	    
+    }
+    public void Initialize()
+    {
+	    
+	  
 	  
     }
     
     //***************************
     // Getters and Setters
     //***************************
-    public string GetLionName()
+    public override string  toString()
     {
 	    return this._name;
     }
@@ -36,11 +53,25 @@ public partial class Lion: AbstractPlayableMeat
     public void SetLionName(string name)
     { 
 	    this._name = name;
+	    nameLabel.Text = name;
     }
     
     public override void SetSelected(bool isSelected)
     {
 	    Selected = isSelected;
+    }
+    
+    //*******************************
+    // Signals
+    //*******************************
+    public void OnAttackBoxBodyEntered(Node2D body)
+    {
+	    // GD.Print($"{_name}==> lets dance {((Lion)body).toString()}!");
+    }
+
+    public void OnDetectionAreaBodyEntered(Node2D body)
+    {
+	    // GD.Print($"{_name} ==> i see {((Lion)body).toString()}!");
     }
 	
     //********************************

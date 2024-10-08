@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://s84jfjg8lrf3"]
+[gd_scene load_steps=7 format=3 uid="uid://s84jfjg8lrf3"]
 
 [ext_resource type="Script" path="res://scripts/meat/playable/Lion.cs" id="1_jq37j"]
 [ext_resource type="Texture2D" uid="uid://xclf01hpt8tv" path="res://assets/sprites/lion_proto.jpg" id="2_2ai1q"]
@@ -8,10 +8,14 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ee3uo"]
 size = Vector2(22.5, 23)
 
+[sub_resource type="LabelSettings" id="LabelSettings_xkywh"]
+font_color = Color(0.00392157, 0.0823529, 0.0470588, 1)
+
 [node name="lionPlayer" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 769
 script = ExtResource("1_jq37j")
+BaseSpeed = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.103, 0.1)
@@ -24,3 +28,9 @@ texture = ExtResource("2_2ai1q")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ee3uo")
 debug_color = Color(0.011555, 0.636054, 0.406119, 0.42)
+
+[node name="nameLabel" type="Label" parent="."]
+offset_right = 37.0
+offset_bottom = 23.0
+text = "Player"
+label_settings = SubResource("LabelSettings_xkywh")

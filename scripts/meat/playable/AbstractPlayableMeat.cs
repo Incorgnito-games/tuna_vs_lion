@@ -7,8 +7,8 @@ namespace TunaVsLion.scripts.meat.playable;
 public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {
 	//Character Fields
-	protected int MeatValue = 1;
-	public float BaseSpeed = 100.0f;
+	[Export]public int MeatValue = 1;
+	[Export]public float BaseSpeed = 100.0f;
 	private float _slowSpeed = 50.0f;
 	
 	//Mechanic Fields
@@ -21,11 +21,10 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	public Vector2 newPos;
 	
 	//Signal Fields
-	private AttackBox attackBox;
+	protected AttackBox attackBox;
+	protected DetectionArea detectionArea;
 
-	private DetectionArea detectionArea;
 	//Debug Fields
-
 	
 	
 	//**************************
@@ -33,19 +32,13 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	//**************************
 	public override void _Ready()
 	{
-		// attackBox = GetNode<AttackBox>("AttackBox");
-			// detectionArea = GetNode<DetectionArea>("DetectionArea");
-		// attackBox.BodyEntered += attackBox.OnAttackBoxBodyEntered;
-		// detectionArea.BodyEntered += detectionArea.OnDetectionAreaEntered;
+		
 	}
 	
 	
 	//**************************
 	// Physics
 	//**************************
-	
-	
-	 
 	public override void _PhysicsProcess(double delta)
 	{
 		if (Selected)
@@ -93,10 +86,16 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	public abstract void FastMove();
 	public abstract void Spawn();
 	 public abstract void SetSelected(bool isSelected);
+
 	
 	//***************************
 	//Getters + Setters
 	//***************************
+	 public virtual string toString()
+	 {
+		 return "PlayableMeat";
+		 
+	 }
 	 public void SetBearing(Vector2 newBearing)
 	 {
 		 this._bearing = newBearing;

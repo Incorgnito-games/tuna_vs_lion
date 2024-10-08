@@ -7,7 +7,6 @@ public partial class DetectionArea : Area2D
 	
 	public override void _Ready()
 	{
-		this.BodyEntered += OnDetectionAreaEntered;
 
 	}
 
@@ -16,9 +15,6 @@ public partial class DetectionArea : Area2D
 	{
 	}
 
-	public void OnDetectionAreaEntered(Node2D Body)
-	{
-		GD.Print("Hey i see you in my personal space");
-	}   
+	 
 	
 }
