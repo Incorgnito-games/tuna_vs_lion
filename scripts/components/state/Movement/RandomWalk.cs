@@ -12,6 +12,10 @@ public partial class RandomWalk: State
     private Timer randSpeedAdjustementTimer = new Timer();
     public override void Enter()
     {
+        if (_meat is null)
+        {
+            return;
+        }
         _setRandomBearing();
     }
 
@@ -31,6 +35,7 @@ public partial class RandomWalk: State
         AddChild(randSpeedAdjustementTimer);
 
         _currentBearing = new Vector2(GD.RandRange(-1,1),GD.RandRange(-1,1));
+         // _meat.Velocity = _currentBearing * (float)_meat.baseSpeed;
     } 
 
     public override void UpdatePhysicsProcess(double delta)

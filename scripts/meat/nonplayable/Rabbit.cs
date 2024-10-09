@@ -1,3 +1,5 @@
+using TunaVsLion.scripts.meat.playable;
+
 namespace TunaVsLion.scripts.meat.nonplayable;
 using Godot;
 
@@ -9,10 +11,14 @@ public partial class Rabbit : AbstractNonPlayableMeat
 	
 	private AttackBox _attackBox;
 	private DetectionArea _detectionArea;
+	private Label _meatMeter;
 	public override void _Ready()
 	{
 		_attackBox = GetNode<AttackBox>("AttackBox");
 		_detectionArea = GetNode<DetectionArea>("DetectionArea");
+		_meatMeter = GetNode<Label>("MeatMeter");
+
+		_meatMeter.Text = MeatValue.ToString();
 
 		_attackBox.BodyEntered += OnBodyEnterAttackBox;
 		_detectionArea.BodyEntered += OnBodyEnteredDetectionArea;
@@ -27,7 +33,16 @@ public partial class Rabbit : AbstractNonPlayableMeat
 	//****************
 	public void OnBodyEnterAttackBox(Node2D body)
 	{
-		
+		if (body is Lion)
+		{
+			
+			MeatValue = -1;
+			if (MeatValue <= 0)
+			{
+				this.QueueFree();
+				_meatMeter.Text = MeatValue.ToString();
+			}
+		}
 	}
 
 	public void OnBodyEnteredDetectionArea(Node2D body)

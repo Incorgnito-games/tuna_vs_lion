@@ -1,6 +1,9 @@
 using Godot;
 using TunaVsLion.scripts.meat.nonplayable;
 using System.Collections.Generic;
+using TunaVsLion;
+using TunaVsLion.scripts.components.state.Movement;
+
 namespace TunaVsLion.scripts;
 
 public partial class Enviroment : Node
@@ -17,11 +20,13 @@ public partial class Enviroment : Node
 
 	private void _initiate()
 	{
-		// for (var i = 0; i < maxPopulation; i++)
-		// {
-		// 	_landMeat.Add((Rabbit)ResourceLoader.Load<PackedScene>("res://scenes/meat/nonplayable/land/rabbit.tscn").Instantiate());
-		// 	
-		// }
+		for (var i = 0; i < maxPopulation; i++)
+		{
+			_landMeat.Add((Rabbit)ResourceLoader.Load<PackedScene>("res://scenes/meat/nonplayable/land/rabbit.tscn").Instantiate());
+			_landMeat[i].Position = Global.GetRandomPointOnLand();
+			// var meatState = _landMeat[i].GetNode<RandomWalk>("Rabbit/StateMachine/RandomWalk");
+			AddChild(_landMeat[i]);
+		}
 		
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

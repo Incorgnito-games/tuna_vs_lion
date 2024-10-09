@@ -7,6 +7,7 @@ public abstract partial class AbstractNonPlayableMeat: CharacterBody2D, IMeat
 
     
 	[Export] public double baseSpeed = 20;
+	[Export] public int MeatValue = 1;
 
     public virtual string toString()
     {

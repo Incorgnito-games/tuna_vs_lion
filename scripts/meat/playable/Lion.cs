@@ -1,6 +1,7 @@
 
 using TunaVsLion.scripts.components;
 using Godot;
+using TunaVsLion.scripts.meat.nonplayable;
 
 namespace TunaVsLion.scripts.meat.playable;
 
@@ -11,11 +12,12 @@ public partial class Lion: AbstractPlayableMeat
     [Export] public int HideLevel = 1;
     [Export] public int ClimbLevel = 1;
     [Export] public int SwimLevel = 1;
-	[Export] public double Health ;
+	[Export] public double Health;
 	
 	//Debug Fields
     private string _name;
-	private Label nameLabel;
+	private Label _nameLabel;
+	private Label _meatMeter;
     
     //**************************
     // Setup
@@ -25,9 +27,11 @@ public partial class Lion: AbstractPlayableMeat
     {
 	    attackBox = GetNode<AttackBox>("AttackBox");
 	    detectionArea = GetNode < DetectionArea>("DetectionArea");
-	    nameLabel = GetNode<Label>("nameLabel");
+	    _nameLabel = GetNode<Label>("nameLabel");
+	    _meatMeter = GetNode<Label>("meatMeter");
 	    
-	    nameLabel.Text = _name;
+	    _nameLabel.Text = _name;
+	    _meatMeter.Text = MeatValue.ToString();
 	    
 
 	    attackBox.BodyEntered += OnAttackBoxBodyEntered;
@@ -41,7 +45,13 @@ public partial class Lion: AbstractPlayableMeat
 	  
 	  
     }
-    
+
+    public override void _Process(double delta)
+    {
+	    this._meatMeter.Text = MeatValue.ToString();
+	    // GD.Print(MeatValue);
+    }
+
     //***************************
     // Getters and Setters
     //***************************
@@ -53,7 +63,7 @@ public partial class Lion: AbstractPlayableMeat
     public void SetLionName(string name)
     { 
 	    this._name = name;
-	    this.nameLabel.Text = name;
+	    this._nameLabel.Text = name;
     }
     
     public override void SetSelected(bool isSelected)
@@ -67,6 +77,12 @@ public partial class Lion: AbstractPlayableMeat
     public void OnAttackBoxBodyEntered(Node2D body)
     {
 	    // GD.Print($"{_name}==> lets dance {((Lion)body).toString()}!");
+	    //naive and doesnt make sense
+	    if (body is Rabbit)
+	    {
+		    MeatValue += 1;
+		    GD.Print("Chomp!");
+	    }
     }
 
     public void OnDetectionAreaBodyEntered(Node2D body)

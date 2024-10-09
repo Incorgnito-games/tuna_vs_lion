@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://k6nc8felj3mj"]
+[gd_scene load_steps=8 format=3 uid="uid://k6nc8felj3mj"]
 
 [ext_resource type="Texture2D" uid="uid://6vegs8jmpqs1" path="res://assets/sprites/rabbit.jpg" id="1_6y6vx"]
 [ext_resource type="Script" path="res://scripts/meat/nonplayable/Rabbit.cs" id="1_ht1n6"]
@@ -9,24 +9,45 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wkevp"]
 size = Vector2(227, 227)
 
+[sub_resource type="LabelSettings" id="LabelSettings_u0uv8"]
+line_spacing = 1.0
+font_size = 12
+font_color = Color(0, 0.0745098, 0, 1)
+outline_color = Color(0.00392157, 0.00392157, 0.054902, 1)
+
 [node name="Rabbit" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 0
 script = ExtResource("1_ht1n6")
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("_initialState") instance=ExtResource("2_kqr85")]
 _initialState = NodePath("RandomWalk")
 
+[node name="RandomWalk" parent="StateMachine" index="1" node_paths=PackedStringArray("_meat")]
+_meat = NodePath("../..")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.025, 0.025)
 texture = ExtResource("1_6y6vx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, -0.5)
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.025, 0.025)
 shape = SubResource("RectangleShape2D_wkevp")
 
 [node name="AttackBox" parent="." instance=ExtResource("3_v5ora")]
+scale = Vector2(0.228188, 0.257329)
 
 [node name="DetectionArea" parent="." instance=ExtResource("4_gdhqo")]
+collision_layer = 257
+collision_mask = 0
+
+[node name="MeatMeter" type="Label" parent="."]
+offset_left = -4.0
+offset_top = -17.0
+offset_right = 36.0
+offset_bottom = 6.0
+text = "0"
+label_settings = SubResource("LabelSettings_u0uv8")
 
 [editable path="StateMachine"]
 [editable path="DetectionArea"]

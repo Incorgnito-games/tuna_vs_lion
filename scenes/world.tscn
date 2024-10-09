@@ -8,9 +8,10 @@
 
 [node name="Enviroment" type="Node" parent="."]
 script = ExtResource("1_8cdhj")
+maxPopulation = 20
 
 [node name="Rabbit" parent="Enviroment" instance=ExtResource("2_qjadp")]
-position = Vector2(120, 107)
+position = Vector2(388, 318)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 

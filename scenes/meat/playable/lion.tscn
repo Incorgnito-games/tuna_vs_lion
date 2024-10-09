@@ -17,12 +17,15 @@ font_color = Color(0.00392157, 0.0823529, 0.0470588, 1)
 collision_layer = 2
 collision_mask = 769
 script = ExtResource("1_jq37j")
+BaseSpeed = 30.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.103, 0.1)
 texture = ExtResource("2_2ai1q")
 
 [node name="DetectionArea" parent="." instance=ExtResource("2_rjr45")]
+scale = Vector2(2, 2)
+collision_mask = 3
 
 [node name="AttackBox" parent="." instance=ExtResource("4_ma5of")]
 
@@ -34,6 +37,14 @@ debug_color = Color(0.011555, 0.636054, 0.406119, 0.42)
 offset_right = 37.0
 offset_bottom = 23.0
 text = "Player"
+label_settings = SubResource("LabelSettings_xkywh")
+
+[node name="meatMeter" type="Label" parent="."]
+offset_left = -4.0
+offset_top = -31.0
+offset_right = 45.0
+offset_bottom = -8.0
+text = "0"
 label_settings = SubResource("LabelSettings_xkywh")
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("_initialState") instance=ExtResource("5_f613h")]
