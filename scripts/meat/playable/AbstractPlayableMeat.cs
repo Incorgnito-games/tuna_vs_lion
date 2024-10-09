@@ -67,20 +67,6 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		MoveAndSlide();
 	}
 	
-	public void SlowMove(double delta)
-	{
-		// Vector2 currentVel = Velocity;
-		// if (_bearing != Vector2.Zero)
-		// {
-		// 	currentVel.Y = _bearing.Y * _slowSpeed;
-		// 	currentVel.X = _bearing.X * _slowSpeed;
-		// }
-		// // Position += _bearing;
-		// Velocity = currentVel;
-		// MoveAndSlide();
-	}
-
-
 
 	//**************************
 	// Abstract Methods

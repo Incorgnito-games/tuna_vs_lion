@@ -2,13 +2,11 @@ using Godot;
 
 namespace TunaVsLion.scripts.meat.nonplayable;
 
-public abstract partial class AbstractNonPlayableMeat: RigidBody2D, IMeat
+public abstract partial class AbstractNonPlayableMeat: CharacterBody2D, IMeat
 {
 
-    [Export] public int maxPopulation = 50;
-    [Export] public double baseSpeed = 20;
-    private int currentPop = 0;
-    private Vector2 _bearing;
+    
+	[Export] public double baseSpeed = 20;
 
     public virtual string toString()
     {
@@ -16,11 +14,7 @@ public abstract partial class AbstractNonPlayableMeat: RigidBody2D, IMeat
     }
     public void Spawn()
     {
-        if (currentPop < maxPopulation)
-        {
-            //if tile is land and not water ...
-            
-        }
+      
     }
 
     private void _initiate()
@@ -42,33 +36,8 @@ public abstract partial class AbstractNonPlayableMeat: RigidBody2D, IMeat
     
     public void Automate(Vector2 worldDim) { }
 	
-    public void SetRandomBearing()
-    {
-        
-        var direction = GD.Randi() % 20;
-
-        _bearing = direction switch
-        {
-            0 => new Vector2(0, -1), //up
-            1 => new Vector2(0, 1), //down
-            2 => new Vector2(-1, 0), //left
-            3 => new Vector2(1, 0), //right
-            4 => new Vector2(-1, -1), //up-left
-            5 => new Vector2(1, -1), //up-right
-            6 => new Vector2(-1, 1), //down-left
-            7 => new Vector2(1, 1), //down-right
-            _ => new Vector2(0, 0)
-        };
-
-    }
-    //**************************
-    // Signal Callbacks
-    //**************************
-	
-    public void OnBearingTimerTimeout()
-    {
-        this.SetRandomBearing();
-    }
+    
+   
   
     
       

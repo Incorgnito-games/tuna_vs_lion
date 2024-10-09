@@ -1,18 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://k6nc8felj3mj"]
+[gd_scene load_steps=7 format=3 uid="uid://k6nc8felj3mj"]
 
 [ext_resource type="Texture2D" uid="uid://6vegs8jmpqs1" path="res://assets/sprites/rabbit.jpg" id="1_6y6vx"]
 [ext_resource type="Script" path="res://scripts/meat/nonplayable/Rabbit.cs" id="1_ht1n6"]
+[ext_resource type="PackedScene" uid="uid://dtnd67ojgfffi" path="res://scenes/components/State/stateMachine.tscn" id="2_kqr85"]
 [ext_resource type="PackedScene" uid="uid://2761vfrxvxm0" path="res://scenes/components/attackBox.tscn" id="3_v5ora"]
 [ext_resource type="PackedScene" uid="uid://der64pd3ap2at" path="res://scenes/components/detectionArea.tscn" id="4_gdhqo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wkevp"]
 size = Vector2(227, 227)
 
-[node name="Rabbit" type="RigidBody2D"]
-collision_layer = 3
-collision_mask = 16
-gravity_scale = 0.0
+[node name="Rabbit" type="CharacterBody2D"]
 script = ExtResource("1_ht1n6")
+
+[node name="StateMachine" parent="." node_paths=PackedStringArray("_initialState") instance=ExtResource("2_kqr85")]
+_initialState = NodePath("RandomWalk")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.1, 0.1)
@@ -27,4 +28,5 @@ shape = SubResource("RectangleShape2D_wkevp")
 
 [node name="DetectionArea" parent="." instance=ExtResource("4_gdhqo")]
 
+[editable path="StateMachine"]
 [editable path="DetectionArea"]

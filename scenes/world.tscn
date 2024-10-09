@@ -1,8 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://bvjumi8snsj3m"]
+[gd_scene load_steps=4 format=3 uid="uid://bvjumi8snsj3m"]
 
+[ext_resource type="Script" path="res://scripts/Enviroment.cs" id="1_8cdhj"]
 [ext_resource type="PackedScene" uid="uid://vt200a7jwto4" path="res://scenes/pride.tscn" id="2_ltmbt"]
+[ext_resource type="PackedScene" uid="uid://k6nc8felj3mj" path="res://scenes/meat/nonplayable/land/rabbit.tscn" id="2_qjadp"]
 
 [node name="World" type="Node2D"]
+
+[node name="Enviroment" type="Node" parent="."]
+script = ExtResource("1_8cdhj")
+
+[node name="Rabbit" parent="Enviroment" instance=ExtResource("2_qjadp")]
+position = Vector2(120, 107)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
@@ -11,5 +19,8 @@ polygon = PackedVector2Array(0, 0, 0, 650, 1155, 650, 1151, 1, 0, 0, -2, -2, 0, 
 
 [node name="pride" parent="." instance=ExtResource("2_ltmbt")]
 position = Vector2(799, 280)
+
+[node name="lionPlayer" parent="pride" index="0"]
+PlayerBaseSpeed = 100.0
 
 [editable path="pride"]

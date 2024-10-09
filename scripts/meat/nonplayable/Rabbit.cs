@@ -1,10 +1,12 @@
+namespace TunaVsLion.scripts.meat.nonplayable;
 using Godot;
-using System;
+
 using TunaVsLion.scripts.components;
 using TunaVsLion.scripts.meat.nonplayable;
 
 public partial class Rabbit : AbstractNonPlayableMeat
 {
+	
 	private AttackBox _attackBox;
 	private DetectionArea _detectionArea;
 	public override void _Ready()
