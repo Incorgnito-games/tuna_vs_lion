@@ -10,4 +10,6 @@
 polygon = PackedVector2Array(0, 0, 0, 650, 1155, 650, 1151, 1, 0, 0, -2, -2, 0, -1, 1212, -45, 1212, 680, -50, 702)
 
 [node name="pride" parent="." instance=ExtResource("2_ltmbt")]
-position = Vector2(927, 217)
+position = Vector2(799, 280)
+
+[editable path="pride"]

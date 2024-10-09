@@ -1,21 +1,58 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using Godot.Collections;
 
 namespace TunaVsLion.scripts.components.state;
 
 public partial class StateMachine : Node
 {
-    public Dictionary StateDict = new Dictionary();
-
+    [Export] private State _initialState;
+    private Dictionary <String, State> StateDict = new Dictionary<String, State>();
+    private State _currentState;
+    private CustomStateSignals _transitionStateSignal;
+    
     public override void _Ready()
     {
+        _transitionStateSignal = GetNode<CustomStateSignals>("/root/CustomStateSignals");
         foreach (var child in this.GetChildren())
         {
-            StateDict.Add(child.Name, child);
+            if (child is State)
+            {
+                StateDict.Add(child.Name, (State)child);
+                _transitionStateSignal.TransitionState += OnStateTransition;
+            }
         }
-        
+
+        if (_initialState is not null)
+        {
+            _initialState.Enter();
+            _currentState = _initialState;
+        }
     }
     
+    public override void _Process(double delta)
+    {
+        if (_currentState is not null)
+        {
+           _currentState.UpdatePhysicsProcess(delta); 
+        }
+    }
+
+    private void OnStateTransition(State state, string stateName)
+    {
+        if (state != _currentState)
+            return;
+
+        var newState = StateDict[stateName.ToLower()];
+
+        if (newState is null)
+            return;
+        
+        if (_currentState is not null)
+            _currentState.Exit();
+        
+        newState.Enter();
+        _currentState = newState;
+
+    }
 }

@@ -12,7 +12,7 @@ public partial class Lion: AbstractPlayableMeat
     [Export] public int ClimbLevel = 1;
     [Export] public int SwimLevel = 1;
 	[Export] public double Health ;
-
+	
 	//Debug Fields
     private string _name;
 	private Label nameLabel;
@@ -27,7 +27,7 @@ public partial class Lion: AbstractPlayableMeat
 	    detectionArea = GetNode < DetectionArea>("DetectionArea");
 	    nameLabel = GetNode<Label>("nameLabel");
 	    
-			nameLabel.Text = _name;
+	    nameLabel.Text = _name;
 	    
 
 	    attackBox.BodyEntered += OnAttackBoxBodyEntered;
@@ -53,12 +53,12 @@ public partial class Lion: AbstractPlayableMeat
     public void SetLionName(string name)
     { 
 	    this._name = name;
-	    nameLabel.Text = name;
+	    this.nameLabel.Text = name;
     }
     
     public override void SetSelected(bool isSelected)
     {
-	    Selected = isSelected;
+	    IsPlayer = isSelected;
     }
     
     //*******************************

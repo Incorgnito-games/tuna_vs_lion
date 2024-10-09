@@ -8,17 +8,17 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {
 	//Character Fields
 	[Export]public int MeatValue = 1;
-	[Export]public float BaseSpeed = 100.0f;
-	private float _slowSpeed = 50.0f;
+	[Export]public float BaseSpeed = 10.0f;
+	[Export] public float PlayerBaseSpeed = 50.0f;
+	
+	[Export]public bool IsPlayer = false;
 	
 	//Mechanic Fields
-	protected bool Selected = false;
 	private double _moveTimer;
 	
 	//Physics Fields
 	private Vector2 _bearing;
 	public Vector2 newDir;
-	public Vector2 newPos;
 	
 	//Signal Fields
 	protected AttackBox attackBox;
@@ -32,7 +32,10 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	//**************************
 	public override void _Ready()
 	{
-		
+		if (IsPlayer)
+		{
+			this.BaseSpeed = PlayerBaseSpeed;
+		}
 	}
 	
 	
@@ -41,7 +44,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	//**************************
 	public override void _PhysicsProcess(double delta)
 	{
-		if (Selected)
+		if (IsPlayer)
 		{
 			CharacterControls();
 		}
@@ -52,13 +55,13 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		var direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		if (direction != Vector2.Zero)
 		{
-			velocity.Y = direction.Y * BaseSpeed;
-			velocity.X = direction.X * BaseSpeed;
+			velocity.Y = direction.Y * PlayerBaseSpeed;
+			velocity.X = direction.X * PlayerBaseSpeed;
 		}
 		else
 		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, BaseSpeed );
-			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, BaseSpeed );
+			velocity.X = Mathf.MoveToward(Velocity.X, 0, PlayerBaseSpeed );
+			velocity.Y = Mathf.MoveToward(Velocity.Y, 0, PlayerBaseSpeed );
 		}
 		Velocity = velocity;
 		MoveAndSlide();
@@ -66,15 +69,15 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	
 	public void SlowMove(double delta)
 	{
-		Vector2 currentVel = Velocity;
-		if (_bearing != Vector2.Zero)
-		{
-			currentVel.Y = _bearing.Y * _slowSpeed;
-			currentVel.X = _bearing.X * _slowSpeed;
-		}
-		// Position += _bearing;
-		Velocity = currentVel;
-		MoveAndSlide();
+		// Vector2 currentVel = Velocity;
+		// if (_bearing != Vector2.Zero)
+		// {
+		// 	currentVel.Y = _bearing.Y * _slowSpeed;
+		// 	currentVel.X = _bearing.X * _slowSpeed;
+		// }
+		// // Position += _bearing;
+		// Velocity = currentVel;
+		// MoveAndSlide();
 	}
 
 
@@ -124,7 +127,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 
 	 public bool GetSelected()
 	 {
-		 return Selected;
+		 return IsPlayer;
 		 
 	 }
 	 
