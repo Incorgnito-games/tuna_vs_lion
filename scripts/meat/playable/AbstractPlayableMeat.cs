@@ -65,6 +65,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		}
 		Velocity = velocity;
 		MoveAndSlide();
+		GD.Print(GlobalPosition);
 	}
 	
 

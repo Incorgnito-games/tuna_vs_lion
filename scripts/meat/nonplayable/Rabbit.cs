@@ -21,6 +21,7 @@ public partial class Rabbit : AbstractNonPlayableMeat
 		_meatMeter.Text = MeatValue.ToString();
 
 		_attackBox.BodyEntered += OnBodyEnterAttackBox;
+		_attackBox.BodyEntered += Enviroment.OnRabbitEaten;
 		_detectionArea.BodyEntered += OnBodyEnteredDetectionArea;
 	}
 

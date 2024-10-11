@@ -18,6 +18,7 @@ public partial class Lion: AbstractPlayableMeat
     private string _name;
 	private Label _nameLabel;
 	private Label _meatMeter;
+	
     
     //**************************
     // Setup

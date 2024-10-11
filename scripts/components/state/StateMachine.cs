@@ -30,7 +30,7 @@ public partial class StateMachine : Node
         }
     }
     
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (_currentState is not null)
         {

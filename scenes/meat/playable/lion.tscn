@@ -13,7 +13,7 @@ size = Vector2(22.5, 23)
 [sub_resource type="LabelSettings" id="LabelSettings_xkywh"]
 font_color = Color(0.00392157, 0.0823529, 0.0470588, 1)
 
-[node name="lionPlayer" type="CharacterBody2D"]
+[node name="lionPlayer" type="CharacterBody2D" groups=["wrappable"]]
 collision_layer = 2
 collision_mask = 769
 script = ExtResource("1_jq37j")

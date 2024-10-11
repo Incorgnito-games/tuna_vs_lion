@@ -15,7 +15,7 @@ font_size = 12
 font_color = Color(0, 0.0745098, 0, 1)
 outline_color = Color(0.00392157, 0.00392157, 0.054902, 1)
 
-[node name="Rabbit" type="CharacterBody2D"]
+[node name="Rabbit" type="CharacterBody2D" groups=["wrappable"]]
 collision_layer = 16
 collision_mask = 0
 script = ExtResource("1_ht1n6")

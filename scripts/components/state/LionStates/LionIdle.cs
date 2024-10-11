@@ -10,8 +10,10 @@ public partial class LionIdle: State
     private float randRunWalkVelocity; 
     
     private Vector2 _newPos;
+    private bool GetNewPos = false;
 
     private Timer randSpeedAdjustementTimer = new Timer();
+    private Timer newPosTimer = new Timer();
     public override void Enter()
     {
         if (_currentPride is null)
@@ -57,6 +59,12 @@ public partial class LionIdle: State
         randSpeedAdjustementTimer.SetWaitTime(GD.RandRange(1,8));
         randSpeedAdjustementTimer.Timeout += OnRandSpeedAdjustmentTimeout;
         AddChild(randSpeedAdjustementTimer);
+        
+        //Timer Setup
+        newPosTimer.SetAutostart(false);
+        newPosTimer.SetWaitTime(10);
+        newPosTimer.Timeout += OnNewPosTimeout;
+        AddChild(newPosTimer);
 
     } 
     //*****************
@@ -82,9 +90,11 @@ public partial class LionIdle: State
         }
 
         _lion.MoveAndSlide();
-        if (_lion.Position.DistanceTo(_newPos) < 10f)
+        newPosTimer.Start();
+        if (_lion.Position.DistanceTo(_newPos) < 10f || GetNewPos)
         {
             _newPos = Pride.GetRandomPointInPrideInfluence(_currentPride);
+            GetNewPos = false;
         }
         
     }
@@ -98,6 +108,12 @@ public partial class LionIdle: State
         randRunWalkVelocity = GD.Randf();
 
     }
+    public void OnNewPosTimeout()
+    {
+        GetNewPos = true;
+        
+
+    }
     
     //********************
     // Getters and Setters
@@ -106,5 +122,6 @@ public partial class LionIdle: State
     public void SetPride(Pride pride)
     {
         this._currentPride = pride;
+        
     }
 }
