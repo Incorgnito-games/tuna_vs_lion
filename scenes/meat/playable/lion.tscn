@@ -25,9 +25,10 @@ texture = ExtResource("2_2ai1q")
 
 [node name="DetectionArea" parent="." instance=ExtResource("2_rjr45")]
 scale = Vector2(2, 2)
-collision_mask = 3
+collision_mask = 19
 
 [node name="AttackBox" parent="." instance=ExtResource("4_ma5of")]
+collision_mask = 18
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ee3uo")

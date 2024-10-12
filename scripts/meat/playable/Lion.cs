@@ -81,7 +81,7 @@ public partial class Lion: AbstractPlayableMeat
 	    //naive and doesnt make sense
 	    if (body is Rabbit)
 	    {
-		    MeatValue += 1;
+		    MeatValue++;
 		    GD.Print("Chomp!");
 	    }
     }

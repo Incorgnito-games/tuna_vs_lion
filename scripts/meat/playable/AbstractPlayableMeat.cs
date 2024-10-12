@@ -10,6 +10,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	[Export]public int MeatValue = 1;
 	[Export]public float BaseSpeed = 10.0f;
 	[Export] public float PlayerBaseSpeed = 50.0f;
+	[Export] public float Stamina = 100.0f;
 	
 	[Export]public bool IsPlayer = false;
 	
@@ -65,7 +66,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		}
 		Velocity = velocity;
 		MoveAndSlide();
-		GD.Print(GlobalPosition);
+		// GD.Print(GlobalPosition);
 	}
 	
 

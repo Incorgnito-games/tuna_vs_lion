@@ -17,7 +17,7 @@ outline_color = Color(0.00392157, 0.00392157, 0.054902, 1)
 
 [node name="Rabbit" type="CharacterBody2D" groups=["wrappable"]]
 collision_layer = 16
-collision_mask = 0
+collision_mask = 769
 script = ExtResource("1_ht1n6")
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("_initialState") instance=ExtResource("2_kqr85")]
@@ -38,8 +38,6 @@ shape = SubResource("RectangleShape2D_wkevp")
 scale = Vector2(0.228188, 0.257329)
 
 [node name="DetectionArea" parent="." instance=ExtResource("4_gdhqo")]
-collision_layer = 257
-collision_mask = 0
 
 [node name="MeatMeter" type="Label" parent="."]
 offset_left = -4.0
