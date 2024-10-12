@@ -29,6 +29,7 @@ public partial class LionIdle: State
             return;
         }
         
+        GD.Print("Idle!");
         _idleRandomWalk();
     }
 

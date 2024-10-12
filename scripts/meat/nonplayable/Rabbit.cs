@@ -8,7 +8,7 @@ using TunaVsLion.scripts.meat.nonplayable;
 
 public partial class Rabbit : AbstractNonPlayableMeat
 {
-	
+	public string RabbitName;
 	private AttackBox _attackBox;
 	private DetectionArea _detectionArea;
 	private Label _meatMeter;
@@ -49,6 +49,11 @@ public partial class Rabbit : AbstractNonPlayableMeat
 	public void OnBodyEnteredDetectionArea(Node2D body)
 	{
 		
+	}
+
+	public override string ToString()
+	{
+		return RabbitName;
 	}
 	
 	

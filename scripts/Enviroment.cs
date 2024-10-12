@@ -39,7 +39,9 @@ public partial class Enviroment : Node
 
 	public void SpawnRabbit()
 	{
-		_landMeat.Add((Rabbit)ResourceLoader.Load<PackedScene>("res://scenes/meat/nonplayable/land/rabbit.tscn").Instantiate());
+		Rabbit newBunny = (Rabbit)ResourceLoader.Load<PackedScene>("res://scenes/meat/nonplayable/land/rabbit.tscn").Instantiate();
+		newBunny.RabbitName = $"Rabbit-{_currentPop}";
+		_landMeat.Add(newBunny);
 		_landMeat.Last().Position = Global.GetRandomPointOnLand();
 		// var meatState = _landMeat[i].GetNode<RandomWalk>("Rabbit/StateMachine/RandomWalk");
 		AddChild(_landMeat.Last());

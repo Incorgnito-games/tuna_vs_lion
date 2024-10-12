@@ -20,3 +20,4 @@ position = Vector2(799, 280)
 PlayerBaseSpeed = 100.0
 
 [editable path="pride"]
+[editable path="pride/lionPlayer"]

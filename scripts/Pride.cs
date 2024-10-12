@@ -47,7 +47,7 @@ public partial class Pride : Node2D
 	}
 	private void _Initiate()
 	{
-		PrideLeader.SetLionName("The King");
+		PrideLeader.CharacterName= "The King";
 		//Timer Setup
 		positionChangeTimer.SetAutostart(true);
 		positionChangeTimer.SetWaitTime(2);
@@ -65,11 +65,11 @@ public partial class Pride : Node2D
 			AddChild(_lionPride[i]);
 			try
 			{
-				_lionPride[i].SetLionName(_debugNames[i]);
+				_lionPride[i].Name = _debugNames[i];
 				
 			}catch (IndexOutOfRangeException e)
 			{
-				_lionPride[i].SetLionName(i.ToString());
+				_lionPride[i].Name = i.ToString();
 				GD.Print(e);
 			}
 		}

@@ -9,11 +9,14 @@ radius = 204.01
 [node name="pride" type="Node2D" node_paths=PackedStringArray("PrideLeader")]
 position = Vector2(-2, 0)
 script = ExtResource("1_jutkc")
-prideSize = 5
+prideSize = 1
 PrideLeader = NodePath("lionPlayer")
 
 [node name="lionPlayer" parent="." instance=ExtResource("1_uxq6p")]
 IsPlayer = true
+
+[node name="LionIdle" parent="lionPlayer/StateMachine" index="2" node_paths=PackedStringArray("_currentPride")]
+_currentPride = NodePath("../../..")
 
 [node name="Area2D" type="Area2D" parent="lionPlayer"]
 position = Vector2(-448, -289)
@@ -26,3 +29,5 @@ shape = SubResource("CircleShape2D_x30rw")
 debug_color = Color(0.798825, 0.419343, 0.117152, 0.42)
 
 [connection signal="child_entered_tree" from="." to="." method="OnChildAdded"]
+
+[editable path="lionPlayer"]

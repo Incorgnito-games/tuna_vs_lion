@@ -1,6 +1,8 @@
 using Godot;
-using System;
+using System.Collections.Generic;
 using TunaVsLion.scripts.components;
+using TunaVsLion.scripts.components.state;
+using TunaVsLion.scripts.meat.nonplayable;
 
 namespace TunaVsLion.scripts.meat.playable;
 
@@ -12,20 +14,28 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	[Export] public float PlayerBaseSpeed = 50.0f;
 	[Export] public float Stamina = 100.0f;
 	
-	[Export]public bool IsPlayer = false;
-	
+	[Export]public bool IsPlayer { get; set; } = false;
+
+	//state fields ---> why did i use a dict if i was going to require both the state object and keyword in signal callback????
+	protected State _chaseState;
+
 	//Mechanic Fields
 	private double _moveTimer;
+	public AbstractNonPlayableMeat CurrentTarget { get; protected set; }
+	protected List<AbstractNonPlayableMeat> _chaseTargets = new List<AbstractNonPlayableMeat>();
 	
 	//Physics Fields
 	private Vector2 _bearing;
 	public Vector2 newDir;
 	
 	//Signal Fields
-	protected AttackBox attackBox;
-	protected DetectionArea detectionArea;
+	protected AttackBox _attackBox;
+	protected DetectionArea _detectionArea;
+	protected CustomStateSignals _stateTransitionSignal;
 
 	//Debug Fields
+    //labels are cause a weird amount of issues<-----WTF
+	
 	
 	
 	//**************************
@@ -37,8 +47,22 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		{
 			this.BaseSpeed = PlayerBaseSpeed;
 		}
+		
+		
+
+		
 	}
 	
+	
+	//***********************
+	// Mechanics
+	//**********************
+	public void StaminaDrain(double drainMultiplier)
+	{
+			
+	}
+	
+
 	
 	//**************************
 	// Physics
@@ -76,27 +100,38 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	
 	public abstract void FastMove();
 	public abstract void Spawn();
-	 public abstract void SetSelected(bool isSelected);
 
+    
 	
 	//***************************
 	//Getters + Setters
 	//***************************
+	
+	 //is this needed anymore ??
+	public  void SetSelected(bool isSelected)
+        {
+    	    IsPlayer = isSelected;
+        }
+	
 	 public virtual string toString()
 	 {
 		 return "PlayableMeat";
 		 
 	 }
+	 
+	 //is this needed anymore ??
 	 public void SetBearing(Vector2 newBearing)
 	 {
 		 this._bearing = newBearing;
 	 }
 
+	 //is this needed anymore ??
 	 public Vector2 GetBearing()
 	 {
 		 return this._bearing;
 	 }
 	 
+	 //is this needed anymore ??
 	 private Rect2 GetCollisionRect()
 	 {
 		 var collisionBodyNode = GetNode<CollisionShape2D>("/CollisionShap2D");
@@ -105,6 +140,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	 }
 	
 
+	 //is this needed anymore ??
 	 /*
 	  * return vector containing character size Vector2(width,height)
 	  */
@@ -113,6 +149,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		 return GetCollisionRect().Size;
 	 }
 
+	 //is this needed anymore ??
 	 public bool GetSelected()
 	 {
 		 return IsPlayer;

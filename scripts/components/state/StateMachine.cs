@@ -7,7 +7,7 @@ namespace TunaVsLion.scripts.components.state;
 public partial class StateMachine : Node
 {
     [Export] private State _initialState;
-    private Dictionary <String, State> StateDict = new Dictionary<String, State>();
+    public readonly Dictionary <String, State> StateDict = new Dictionary<String, State>();
     private State _currentState;
     private CustomStateSignals _transitionStateSignal;
     
@@ -19,7 +19,7 @@ public partial class StateMachine : Node
             if (child is State)
             {
                 StateDict.Add(child.Name, (State)child);
-                _transitionStateSignal.TransitionState += OnStateTransition;
+                // _transitionStateSignal.TransitionState += OnStateTransition;
             }
         }
 
@@ -41,15 +41,20 @@ public partial class StateMachine : Node
     private void OnStateTransition(State state, string stateName)
     {
         if (state != _currentState)
+        {
             return;
+        }
 
         var newState = StateDict[stateName.ToLower()];
-
+        GD.Print(StateDict.ToString());
         if (newState is null)
             return;
-        
+
         if (_currentState is not null)
+        {
             _currentState.Exit();
+            GD.Print("no t null");
+        }
         
         newState.Enter();
         _currentState = newState;
