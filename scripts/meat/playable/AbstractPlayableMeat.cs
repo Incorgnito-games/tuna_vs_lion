@@ -1,7 +1,6 @@
 using Godot;
 using System.Collections.Generic;
-using TunaVsLion.scripts.components;
-using TunaVsLion.scripts.components.state;
+using System.Linq;
 using TunaVsLion.scripts.meat.nonplayable;
 
 namespace TunaVsLion.scripts.meat.playable;
@@ -16,27 +15,16 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	
 	[Export]public bool IsPlayer { get; set; } = false;
 
-	//state fields ---> why did i use a dict if i was going to require both the state object and keyword in signal callback????
-	protected State _chaseState;
-
 	//Mechanic Fields
 	private double _moveTimer;
-	public AbstractNonPlayableMeat CurrentTarget { get; protected set; }
-	protected List<AbstractNonPlayableMeat> _chaseTargets = new List<AbstractNonPlayableMeat>();
-	
+	public List<AbstractNonPlayableMeat> ChaseTargets = new List<AbstractNonPlayableMeat>();
+	public AbstractNonPlayableMeat CurrentTarget { get;  set; }
+
 	//Physics Fields
 	private Vector2 _bearing;
 	public Vector2 newDir;
-	
-	//Signal Fields
-	protected AttackBox _attackBox;
-	protected DetectionArea _detectionArea;
-	protected CustomStateSignals _stateTransitionSignal;
 
 	//Debug Fields
-    //labels are cause a weird amount of issues<-----WTF
-	
-	
 	
 	//**************************
 	// Setup
@@ -47,12 +35,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		{
 			this.BaseSpeed = PlayerBaseSpeed;
 		}
-		
-		
-
-		
 	}
-	
 	
 	//***********************
 	// Mechanics
@@ -61,8 +44,10 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	{
 			
 	}
-	
-
+	public AbstractNonPlayableMeat GetClosetTarget()
+	{
+		return ChaseTargets.OrderBy(vec => this.Position.DistanceTo(vec.Position)).First();
+	}
 	
 	//**************************
 	// Physics
@@ -92,15 +77,10 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		MoveAndSlide();
 		// GD.Print(GlobalPosition);
 	}
-	
 
 	//**************************
 	// Abstract Methods
 	//**************************
-	
-	public abstract void FastMove();
-	public abstract void Spawn();
-
     
 	
 	//***************************
@@ -155,8 +135,6 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		 return IsPlayer;
 		 
 	 }
-	 
-	 
 	 
 	 //****************************
 	 // Signal Callbacks

@@ -23,7 +23,7 @@ script = ExtResource("1_ht1n6")
 [node name="StateMachine" parent="." node_paths=PackedStringArray("_initialState") instance=ExtResource("2_kqr85")]
 _initialState = NodePath("RandomWalk")
 
-[node name="RandomWalk" parent="StateMachine" index="1" node_paths=PackedStringArray("_meat")]
+[node name="RandomWalk" parent="StateMachine" index="0" node_paths=PackedStringArray("_meat")]
 _meat = NodePath("../..")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

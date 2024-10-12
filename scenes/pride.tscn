@@ -15,7 +15,7 @@ PrideLeader = NodePath("lionPlayer")
 [node name="lionPlayer" parent="." instance=ExtResource("1_uxq6p")]
 IsPlayer = true
 
-[node name="LionIdle" parent="lionPlayer/StateMachine" index="2" node_paths=PackedStringArray("_currentPride")]
+[node name="LionIdle" parent="lionPlayer/StateMachine" index="1" node_paths=PackedStringArray("_currentPride")]
 _currentPride = NodePath("../../..")
 
 [node name="Area2D" type="Area2D" parent="lionPlayer"]

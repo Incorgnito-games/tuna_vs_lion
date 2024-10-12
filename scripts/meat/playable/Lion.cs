@@ -1,9 +1,10 @@
 
 using TunaVsLion.scripts.components;
 using Godot;
-using System.Linq;
-using TunaVsLion.scripts.components.state;
 using TunaVsLion.scripts.meat.nonplayable;
+using System.Collections.Generic;
+using System.Linq;
+
 
 namespace TunaVsLion.scripts.meat.playable;
 
@@ -19,12 +20,12 @@ public partial class Lion: AbstractPlayableMeat
 	[Export] public double Health;
 
 	//State fields
-	private State _idleState;
 	//Debug Fields
 	
 	public string CharacterName { get; set; }
 	protected Label _nameLabel;
-    	protected Label _meatMeter;
+	protected Label _meatMeter;
+	protected AttackBox _attackBox;
     
     //**************************
     // Setup
@@ -32,17 +33,8 @@ public partial class Lion: AbstractPlayableMeat
 
     public override void _Ready()
     {
-		//might be in the wrong scope, maybe move to concrete class??
-		_chaseState = GetNode<State>("StateMachine/Chase");
-		_stateTransitionSignal = GetNode<CustomStateSignals>("/root/CustomStateSignals");
-	    _idleState = GetNode<State>("StateMachine/LionIdle");
 	    _attackBox = GetNode<AttackBox>("AttackBox");
-	    _detectionArea = GetNode < DetectionArea>("DetectionArea");
-
 	    _attackBox.BodyEntered += OnAttackBoxBodyEntered;
-	    _detectionArea.BodyEntered += OnDetectionAreaBodyEntered;
-	    _detectionArea.BodyExited += OnBodyExitedDetectionArea;
-	   
 		 //play hud labeling
 	    _nameLabel = GetNode<Label>("nameLabel"); 
 	    _meatMeter = GetNode<Label>("meatMeter");
@@ -68,83 +60,24 @@ public partial class Lion: AbstractPlayableMeat
     {
 	    return this.CharacterName;
     }
-
     
     //*******************************
-    // Signals
+    // Mechanics
     //*******************************
+  
+    //********************************
+    // Signal callbacks
+    //********************************
+  
+    //will need to implment own state
     public void OnAttackBoxBodyEntered(Node2D body)
     {
 	    // GD.Print($"{_name}==> lets dance {((Lion)body).toString()}!");
 	    //naive and doesnt make sense
-	    if (body is Rabbit)
+	    if (body is AbstractNonPlayableMeat)
 	    {
 		    MeatValue++;
-		    GD.Print($"{CharacterName} ==> Chomp!");
+		    GD.Print($"{Name} ==> Chomp!");
 	    }
     }
-
-    public void OnDetectionAreaBodyEntered(Node2D body)
-    {
-	    if (IsPlayer)
-	    {
-		    return;
-	    }
-	    if (body is null)
-		    return;
-	    
-	    if (body is Rabbit)
-	    {
-		    GD.Print("Rabbit Spotted");
-		    _chaseTargets.Add((AbstractNonPlayableMeat)body);
-		    string result = "[" + string.Join(", ", _chaseTargets.Select(node => node.Name)) + "]";
-		    GD.Print(result);
-		   
-	    }
-
-	    if (_chaseTargets.Count > 0)
-	    {
-			CurrentTarget = _chaseTargets.OrderBy(vec => Position.DistanceTo(vec.Position)).First();
-			GD.Print($"current target ==> {CurrentTarget.Name}");
-	    }	
-	    _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), _idleState, "Chase");
-	     // GD.Print($"{CharacterName} ==> Chase!");
-    }
-
-    private void OnBodyExitedDetectionArea(Node2D body)
-    {
-	    if (body is null)
-		    return;
-
-	    if (_chaseTargets.Count == 0)
-	    {
-			_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), _chaseState, "LionIdle");
-		    
-	    }
-
-	    if (_chaseTargets.Contains(body))
-	    {
-		    _chaseTargets.Remove((AbstractNonPlayableMeat)body);
-	    }
-
-	    // if (CurrentTarget.GetInstanceId() == body.GetInstanceId())
-	    // {
-		   //  CurrentTarget = null;
-	    // }
-	    
-    }
-	
-    
-    //need to update interface as these will move to state
-    //********************************
-    // Mechanics Logic
-    //********************************
-    void Run() {}
-    void Climb() {}
-    void Swim() {}
-    void Hunt() {}
-    public override void Spawn() {}
-	public override void FastMove() {}
-	
-  
 }

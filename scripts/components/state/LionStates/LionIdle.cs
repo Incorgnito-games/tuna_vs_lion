@@ -1,6 +1,10 @@
+using TunaVsLion.scripts.meat.nonplayable;
+
 namespace TunaVsLion.scripts.components.state.lionStates;
 using meat.playable;
 using Godot;
+using System.Linq;
+
 public partial class LionIdle: State
 {
     [Export] private Pride _currentPride;
@@ -11,11 +15,15 @@ public partial class LionIdle: State
     
     private Vector2 _newPos;
     private bool GetNewPos = false;
+	private CustomStateSignals _stateTransitionSignal;
+
+    [Export]private DetectionArea _detectionArea;
 
     private Timer randSpeedAdjustementTimer = new Timer();
     private Timer newPosTimer = new Timer();
     public override void Enter()
     {
+        GD.Print("Entering Idle State");
         if (_currentPride is null)
         {
             return;
@@ -55,6 +63,9 @@ public partial class LionIdle: State
 
     public override void _Ready()
     {
+        _detectionArea.BodyEntered += OnDetectionAreaBodyEntered;
+         
+	    _stateTransitionSignal = GetNode<CustomStateSignals>("/root/CustomStateSignals");
         //Timer Setup
         randSpeedAdjustementTimer.SetAutostart(true);
         randSpeedAdjustementTimer.SetWaitTime(GD.RandRange(1,8));
@@ -116,10 +127,36 @@ public partial class LionIdle: State
 
     }
     
+    public void OnDetectionAreaBodyEntered(Node2D body)
+    {
+        if (_lion.IsPlayer)
+        {
+            return;
+        }
+        if (body is null)
+            return;
+	    
+        if (body is AbstractNonPlayableMeat)
+        {
+            GD.Print("Rabbit Spotted");
+            _lion.ChaseTargets.Add((AbstractNonPlayableMeat)body);
+            string result = "[" + string.Join(", ", _lion.ChaseTargets.Select(node => node.Name)) + "]";
+            GD.Print(result);
+            _lion.CurrentTarget = _lion.GetClosetTarget(); 
+            GD.Print($"current target ==> {_lion.CurrentTarget.Name}");
+            _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "chase");
+		   
+        }
+
+        if (_lion.ChaseTargets.Count > 0)
+        {
+        }	
+    }
+    
+    
     //********************
     // Getters and Setters
     //********************
-
     public void SetPride(Pride pride)
     {
         this._currentPride = pride;

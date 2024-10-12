@@ -52,10 +52,12 @@ label_settings = SubResource("LabelSettings_xkywh")
 [node name="StateMachine" parent="." node_paths=PackedStringArray("_initialState") instance=ExtResource("5_f613h")]
 _initialState = NodePath("LionIdle")
 
-[node name="LionIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("_lion")]
+[node name="LionIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("_lion", "_detectionArea")]
 script = ExtResource("6_2a3al")
 _lion = NodePath("../..")
+_detectionArea = NodePath("../../DetectionArea")
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("_character")]
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("_character", "_detectionArea")]
 script = ExtResource("6_ypt3m")
 _character = NodePath("../..")
+_detectionArea = NodePath("../../DetectionArea")
