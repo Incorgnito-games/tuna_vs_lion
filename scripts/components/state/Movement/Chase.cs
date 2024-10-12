@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using TunaVsLion.scripts.meat.playable;
 
 namespace TunaVsLion.scripts.components.state.Movement;
@@ -11,10 +12,12 @@ public partial class Chase: State
 	[Export] private AbstractPlayableMeat _character;
 	[Export] private float _chaseMultiplier = 1.5f;
 	[Export] private float _staminaUsagePerFrame = 1.0f;
+	public RayCast2D DebugRay;
 	
 	//Signal Fields
 	[Export]private DetectionArea _detectionArea;
 	private CustomStateSignals _stateTransitionSignal;
+	private float _distanceToTarget;
 	
 	public override void Enter()
 	{
@@ -25,6 +28,8 @@ public partial class Chase: State
 		if (!_character.IsPlayer)
 		{
 			GD.Print("Chasing");
+			DebugRay = new RayCast2D();
+			AddChild(DebugRay);
 			_autoChase();
 		}
 	
@@ -32,6 +37,7 @@ public partial class Chase: State
 
     public override void Exit()
     {
+	    DebugRay.Free();
     }
 
     public override void _Ready()
@@ -49,11 +55,36 @@ public partial class Chase: State
 	    if (_character.CurrentTarget is not null)
 	    {
 		    
-	    var targetPosition = _character.CurrentTarget.Position;
-
-	    var newDir = (targetPosition - _character.Position).Normalized();
+	    var targetPosition = _character.CurrentTarget.GlobalPosition;
+	    _distanceToTarget = (targetPosition - _character.GlobalPosition).Length();
+	    DebugRay.GlobalPosition = _character.GlobalPosition;
+	    DebugRay.TargetPosition = targetPosition;
+	    var newDir = (targetPosition - _character.GlobalPosition).Normalized();
 	    _character.Velocity = newDir * _character.BaseSpeed * _chaseMultiplier;
 
+	    GD.Print(_distanceToTarget);
+	    if (_distanceToTarget < 10f)
+	    {
+		    
+		    if (_character.ChaseTargets.Contains(_character.CurrentTarget))
+		    {
+			    _character.ChaseTargets.Remove(_character.CurrentTarget);
+				_character.CurrentTarget.Free();
+				GD.Print("Chomp!");
+			    if (_character.ChaseTargets.Count != 0)
+			    {
+				    _character.CurrentTarget = _character.GetClosetTarget();
+			    }
+			    else
+			    {
+				    _character.CurrentTarget = null;
+					_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "lionidle");
+				    
+			    }
+		    }
+		    
+		    
+	    }
 	    _character.MoveAndSlide();
 	    }
 
@@ -71,7 +102,8 @@ public partial class Chase: State
 		    {
 			    _autoChase();
 		    }
-	
+
+		   
 	    }
     }
     

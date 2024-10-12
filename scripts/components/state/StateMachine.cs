@@ -18,8 +18,9 @@ public partial class StateMachine : Node
         {
             if (child is State)
             {
-                if(child.Name is not null)
+                if (child.Name is not null)
                     StateDict.Add(((string)child.Name).ToLower(), (State)child);
+                
                 _transitionStateSignal.TransitionState += OnStateTransition;
             }
         }
@@ -47,14 +48,12 @@ public partial class StateMachine : Node
         }
 
         var newState = StateDict[stateName.ToLower()];
-        GD.Print(StateDict.ToString());
         if (newState is null)
             return;
 
         if (_currentState is not null)
         {
             _currentState.Exit();
-            GD.Print("not null");
         }
         
         newState.Enter();

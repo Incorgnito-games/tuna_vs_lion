@@ -34,16 +34,16 @@ public partial class Rabbit : AbstractNonPlayableMeat
 	//****************
 	public void OnBodyEnterAttackBox(Node2D body)
 	{
-		if (body is Lion)
-		{
-			
-			MeatValue = -1;
-			if (MeatValue <= 0)
-			{
-				this.QueueFree();
-				_meatMeter.Text = MeatValue.ToString();
-			}
-		}
+		// if (body is Lion)
+		// {
+		// 	
+		// 	MeatValue = -1;
+		// 	if (MeatValue <= 0)
+		// 	{
+		// 		this.QueueFree();
+		// 		_meatMeter.Text = MeatValue.ToString();
+		// 	}
+		// }
 	}
 
 	public void OnBodyEnteredDetectionArea(Node2D body)
