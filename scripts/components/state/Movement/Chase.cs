@@ -58,12 +58,12 @@ public partial class Chase: State
 	    var targetPosition = _character.CurrentTarget.GlobalPosition;
 	    _distanceToTarget = (targetPosition - _character.GlobalPosition).Length();
 	    DebugRay.GlobalPosition = _character.GlobalPosition;
-	    DebugRay.TargetPosition = targetPosition;
+	    DebugRay.TargetPosition = _character.CurrentTarget.GlobalPosition;
 	    var newDir = (targetPosition - _character.GlobalPosition).Normalized();
 	    _character.Velocity = newDir * _character.BaseSpeed * _chaseMultiplier;
 
 	    GD.Print(_distanceToTarget);
-	    if (_distanceToTarget < 10f)
+	    if (_distanceToTarget < 5f)
 	    {
 		    
 		    if (_character.ChaseTargets.Contains(_character.CurrentTarget))
