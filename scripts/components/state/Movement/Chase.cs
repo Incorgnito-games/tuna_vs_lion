@@ -9,10 +9,13 @@ using state;
 
 public partial class Chase: State
 {
+	//character modifiers
 	[Export] private AbstractPlayableMeat _character;
 	[Export] private float _chaseMultiplier = 1.5f;
 	[Export] private float _staminaUsagePerFrame = 1.0f;
-	public RayCast2D DebugRay;
+	
+	
+	//debug
 	
 	//Signal Fields
 	[Export]private DetectionArea _detectionArea;
@@ -28,8 +31,6 @@ public partial class Chase: State
 		if (!_character.IsPlayer)
 		{
 			GD.Print("Chasing");
-			DebugRay = new RayCast2D();
-			AddChild(DebugRay);
 			_autoChase();
 		}
 	
@@ -37,7 +38,6 @@ public partial class Chase: State
 
     public override void Exit()
     {
-	    DebugRay.Free();
     }
 
     public override void _Ready()
@@ -54,38 +54,39 @@ public partial class Chase: State
     {
 	    if (_character.CurrentTarget is not null)
 	    {
-		    
-	    var targetPosition = _character.CurrentTarget.GlobalPosition;
-	    _distanceToTarget = (targetPosition - _character.GlobalPosition).Length();
-	    DebugRay.GlobalPosition = _character.GlobalPosition;
-	    DebugRay.TargetPosition = _character.CurrentTarget.GlobalPosition;
-	    var newDir = (targetPosition - _character.GlobalPosition).Normalized();
-	    _character.Velocity = newDir * _character.BaseSpeed * _chaseMultiplier;
+			//distance debug	
+			var targetPosition = _character.CurrentTarget.GlobalPosition;
+			_distanceToTarget = (targetPosition - _character.GlobalPosition).Length();
+			
+			//positioning
+			var newDir = (targetPosition - _character.GlobalPosition).Normalized();
+			_character.Velocity = newDir * _character.BaseSpeed * _chaseMultiplier;
 
-	    GD.Print(_distanceToTarget);
-	    if (_distanceToTarget < 5f)
-	    {
+			GD.Print(_distanceToTarget);
 		    
-		    if (_character.ChaseTargets.Contains(_character.CurrentTarget))
-		    {
-			    _character.ChaseTargets.Remove(_character.CurrentTarget);
-				_character.CurrentTarget.Free();
-				GD.Print("Chomp!");
-			    if (_character.ChaseTargets.Count != 0)
-			    {
-				    _character.CurrentTarget = _character.GetClosetTarget();
-			    }
-			    else
-			    {
-				    _character.CurrentTarget = null;
-					_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "lionidle");
-				    
-			    }
-		    }
-		    
-		    
-	    }
-	    _character.MoveAndSlide();
+			//free and remove attack npc --> move to attackarea callback
+			if (_distanceToTarget < 5f) 
+			{
+				if (_character.ChaseTargets.Contains(_character.CurrentTarget))
+				{
+					_character.ChaseTargets.Remove(_character.CurrentTarget);
+					_character.CurrentTarget.Free();
+					GD.Print("Chomp!");
+					if (_character.ChaseTargets.Count != 0)
+					{
+						_character.CurrentTarget = _character.GetClosetTarget();
+					}
+					else
+					{
+						_character.CurrentTarget = null;
+						_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "lionidle");
+						
+					}
+				}
+				
+				
+			}
+			_character.MoveAndSlide(); 
 	    }
 
     }
