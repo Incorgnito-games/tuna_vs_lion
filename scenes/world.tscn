@@ -8,7 +8,6 @@
 
 [node name="Enviroment" type="Node" parent="."]
 script = ExtResource("1_8cdhj")
-maxPopulation = 5
 
 [node name="Rabbit" parent="Enviroment" instance=ExtResource("2_qjadp")]
 position = Vector2(388, 318)

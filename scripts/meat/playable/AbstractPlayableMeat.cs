@@ -12,8 +12,8 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	[Export]public float BaseSpeed = 10.0f;
 	[Export] public float PlayerBaseSpeed = 50.0f;
 	[Export] public float Stamina = 100.0f;
-	
-	[Export]public bool IsPlayer { get; set; } = false;
+	[Export]public bool IsPlayer { get; set; }
+	[Export] public string CharacterName { get; set; } = "The King";
 
 	//Mechanic Fields
 	private double _moveTimer;
@@ -21,10 +21,10 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	public AbstractNonPlayableMeat CurrentTarget { get;  set; }
 
 	//Physics Fields
-	private Vector2 _bearing;
-	public Vector2 newDir;
 
 	//Debug Fields
+	protected Label _meatMeter;
+	protected Label _nameLabel;
 	
 	//**************************
 	// Setup
@@ -35,20 +35,15 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		{
 			this.BaseSpeed = PlayerBaseSpeed;
 		}
+	    _meatMeter = GetNode<Label>("meatMeter");
+		_nameLabel = GetNode<Label>("nameLabel"); 
+	    
+		//play hud labeling
+		_meatMeter.Text = MeatValue.ToString();
+		_nameLabel.Text = CharacterName;
+
 	}
-	
-	//***********************
-	// Mechanics
-	//**********************
-	public void StaminaDrain(double drainMultiplier)
-	{
-			
-	}
-	public AbstractNonPlayableMeat GetClosetTarget()
-	{
-		return ChaseTargets.OrderBy(vec => this.Position.DistanceTo(vec.Position)).First();
-	}
-	
+		
 	//**************************
 	// Physics
 	//**************************
@@ -77,6 +72,19 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		MoveAndSlide();
 		// GD.Print(GlobalPosition);
 	}
+	//***********************
+	// Mechanics
+	//**********************
+	
+	public override void _Process(double delta)
+    {
+	    if(_meatMeter is not null)
+			_meatMeter.Text = MeatValue.ToString();
+    }
+	public AbstractNonPlayableMeat GetClosetTarget()
+	{
+		return ChaseTargets.OrderBy(vec => this.Position.DistanceTo(vec.Position)).First();
+	}
 
 	//**************************
 	// Abstract Methods
@@ -86,53 +94,10 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	//***************************
 	//Getters + Setters
 	//***************************
-	
-	 //is this needed anymore ??
-	public  void SetSelected(bool isSelected)
-        {
-    	    IsPlayer = isSelected;
-        }
-	
+
 	 public virtual string toString()
 	 {
-		 return "PlayableMeat";
-		 
-	 }
-	 
-	 //is this needed anymore ??
-	 public void SetBearing(Vector2 newBearing)
-	 {
-		 this._bearing = newBearing;
-	 }
-
-	 //is this needed anymore ??
-	 public Vector2 GetBearing()
-	 {
-		 return this._bearing;
-	 }
-	 
-	 //is this needed anymore ??
-	 private Rect2 GetCollisionRect()
-	 {
-		 var collisionBodyNode = GetNode<CollisionShape2D>("/CollisionShap2D");
-			
-		 return collisionBodyNode.GetShape().GetRect();
-	 }
-	
-
-	 //is this needed anymore ??
-	 /*
-	  * return vector containing character size Vector2(width,height)
-	  */
-	 private Vector2 GetCharacterDimensions()
-	 {
-		 return GetCollisionRect().Size;
-	 }
-
-	 //is this needed anymore ??
-	 public bool GetSelected()
-	 {
-		 return IsPlayer;
+		 return CharacterName;
 		 
 	 }
 	 

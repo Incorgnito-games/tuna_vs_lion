@@ -14,7 +14,12 @@ public partial class Main : Node2D
 	{
 		var viewPortSize = GetViewportRect().Size;
 	
+		
+		/*
+		 * Wrapping the x and y boundaries
+		 */
 		var wrappableMembers = GetTree().GetNodesInGroup("wrappable");
+		
 		foreach(CharacterBody2D  member in wrappableMembers)
 		{
 			

@@ -5,16 +5,15 @@ using System.Collections.Generic;
 using TunaVsLion.scripts.components.state.lionStates;
 
 namespace TunaVsLion.scripts;
-using TunaVsLion.scripts.components.state;
 
 public partial class Pride : Node2D
 {
 	//Component Fields
 	[Export] public int prideSize = 2;
-	[Export] public Lion PrideLeader;
+	[Export] public Lion PrideLeader { get; set; }
 	
 	//Mechanics Fields
-	private double _prideRadius;
+	private double _prideRadius { get; set; }
 	private CollisionShape2D _prideInfluence;
 
 	//Character Fields
@@ -47,7 +46,7 @@ public partial class Pride : Node2D
 	}
 	private void _Initiate()
 	{
-		PrideLeader.CharacterName= "The King";
+		GD.Print(PrideLeader.CharacterName);
 		//Timer Setup
 		positionChangeTimer.SetAutostart(true);
 		positionChangeTimer.SetWaitTime(2);
@@ -58,20 +57,22 @@ public partial class Pride : Node2D
 		for (var i = 0; i < prideSize; i++)
 		{
 			_lionPride.Add((Lion)ResourceLoader.Load<PackedScene>("res://scenes/meat/playable/lion.tscn").Instantiate());
-			_lionPride[i].SetSelected(false);
+			_lionPride[i].IsPlayer =false;
 			_lionPride[i].Position = GetRandomPointInPrideInfluence(this);
-			var lionState = _lionPride[i].GetNode<LionIdle>("./StateMachine/LionIdle");
-			lionState.SetPride(this);
-			AddChild(_lionPride[i]);
 			try
 			{
-				_lionPride[i].Name = _debugNames[i];
+				_lionPride[i].CharacterName = _debugNames[i];
 				
 			}catch (IndexOutOfRangeException e)
 			{
-				_lionPride[i].Name = i.ToString();
+				_lionPride[i].CharacterName = $"Lion-{i.ToString()}";
 				GD.Print(e);
 			}
+			
+			var lionState = _lionPride[i].GetNode<LionIdle>("./StateMachine/LionIdle");
+			lionState.SetPride(this);
+			
+			AddChild(_lionPride[i]);
 		}
 		
 	}
@@ -82,7 +83,7 @@ public partial class Pride : Node2D
 	public static Vector2 GetRandomPointInPrideInfluence(Pride pride)
 	{
 		//uniform random distribution of circles radius
-		var uniformRandRadius = Mathf.Sqrt( GD.RandRange(0, (pride.GetPrideRadius() * pride.GetPrideRadius())));
+		var uniformRandRadius = Mathf.Sqrt( GD.RandRange(0, (pride._prideRadius * pride._prideRadius)));
 		//random angle in radians (0 - 2pi)
 		var randAngle = GD.RandRange(0, 2 * Mathf.Pi);
 
@@ -90,8 +91,9 @@ public partial class Pride : Node2D
 
 		//w/o center --> (old)this is assuming the cdnter of the pride influende is (0,0) aka center of local scene
 		//w/ center --> (current)using player as centerpoint via prideLeader
-		randPoint.X = pride.GetPrideLeaderPos().X + (float)(uniformRandRadius * Mathf.Cos(randAngle));
-		randPoint.Y = pride.GetPrideLeaderPos().Y + (float)(uniformRandRadius * Mathf.Sin(randAngle));
+		//global or local --> this still fucks me up and will take a bit
+		randPoint.X = pride.PrideLeader.Position.X + (float)(uniformRandRadius * Mathf.Cos(randAngle));
+		randPoint.Y = pride.PrideLeader.Position.Y + (float)(uniformRandRadius * Mathf.Sin(randAngle));
 
 		return randPoint;
 	}
@@ -107,14 +109,6 @@ public partial class Pride : Node2D
 	//*********************
 	// Getters + Setters
 	//*********************
-	public Vector2 GetPrideLeaderPos()
-	{
-		return PrideLeader.Position;
-	}	
 
-	public double GetPrideRadius()
-	{
-		return _prideRadius;
-	}
 
 }

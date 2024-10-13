@@ -9,7 +9,7 @@ namespace TunaVsLion.scripts;
 
 public partial class Enviroment : Node
 {
-	[Export] public int maxPopulation = 50;
+	[Export] public int maxPopulation = 5;
 	private readonly List<AbstractNonPlayableMeat> _landMeat = new List<AbstractNonPlayableMeat>();
 	private static int _currentPop = 0;
 	
@@ -30,7 +30,7 @@ public partial class Enviroment : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (_currentPop < 50)
+		if (_currentPop < maxPopulation)
 		{
 			SpawnRabbit();
 		}
