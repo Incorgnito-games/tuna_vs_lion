@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://xclf01hpt8tv" path="res://assets/sprites/lion_proto.jpg" id="2_2ai1q"]
 [ext_resource type="PackedScene" uid="uid://der64pd3ap2at" path="res://scenes/components/detectionArea.tscn" id="2_rjr45"]
 [ext_resource type="PackedScene" uid="uid://2761vfrxvxm0" path="res://scenes/components/attackBox.tscn" id="4_ma5of"]
-[ext_resource type="PackedScene" uid="uid://dtnd67ojgfffi" path="res://scenes/components/State/stateMachine.tscn" id="5_f613h"]
+[ext_resource type="Script" path="res://scripts/components/state/StateMachine.cs" id="5_cy8a3"]
 [ext_resource type="Script" path="res://scripts/components/state/LionStates/LionIdle.cs" id="6_2a3al"]
 [ext_resource type="Script" path="res://scripts/components/state/Movement/Chase.cs" id="6_ypt3m"]
 
@@ -49,7 +49,8 @@ offset_bottom = -8.0
 text = "0"
 label_settings = SubResource("LabelSettings_xkywh")
 
-[node name="StateMachine" parent="." node_paths=PackedStringArray("_initialState") instance=ExtResource("5_f613h")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("_initialState")]
+script = ExtResource("5_cy8a3")
 _initialState = NodePath("LionIdle")
 
 [node name="LionIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("_lion", "_detectionArea")]

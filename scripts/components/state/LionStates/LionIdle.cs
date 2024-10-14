@@ -1,9 +1,10 @@
-using TunaVsLion.scripts.meat.nonplayable;
-
 namespace TunaVsLion.scripts.components.state.lionStates;
-using meat.playable;
-using Godot;
+
 using System.Linq;
+using Godot;
+
+using meat.nonplayable;
+using meat.playable;
 
 public partial class LionIdle: State
 {

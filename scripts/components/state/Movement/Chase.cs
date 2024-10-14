@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
-using TunaVsLion.scripts.meat.playable;
-
 namespace TunaVsLion.scripts.components.state.Movement;
-using Godot;
-using meat.nonplayable;
+
 using System.Linq;
+using Godot;
+
+using meat.playable;
+using meat.nonplayable;
 using state;
 
 public partial class Chase: State

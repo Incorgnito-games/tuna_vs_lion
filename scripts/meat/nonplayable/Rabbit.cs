@@ -1,11 +1,9 @@
-using TunaVsLion.scripts.components.state;
-using TunaVsLion.scripts.meat.playable;
-
 namespace TunaVsLion.scripts.meat.nonplayable;
+
 using Godot;
 
-using TunaVsLion.scripts.components;
-using TunaVsLion.scripts.meat.nonplayable;
+using playable;
+
 
 public partial class Rabbit : AbstractNonPlayableMeat
 {
@@ -77,6 +75,10 @@ public partial class Rabbit : AbstractNonPlayableMeat
 
 	public void OnBodyEnteredDetectionArea(Node2D body)
 	{
+		if (body is AbstractPlayableMeat)
+		{
+			this.CurrentAttacker = (AbstractPlayableMeat)body;
+		}
 		
 	}
 

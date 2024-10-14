@@ -1,6 +1,5 @@
-using TunaVsLion.scripts.meat.nonplayable;
-
 namespace TunaVsLion.scripts.components.state;
+
 using Godot;
 
 public partial class CustomStateSignals : Node

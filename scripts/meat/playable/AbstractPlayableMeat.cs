@@ -1,9 +1,10 @@
+namespace TunaVsLion.scripts.meat.playable;
+
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
-using TunaVsLion.scripts.meat.nonplayable;
+using nonplayable;
 
-namespace TunaVsLion.scripts.meat.playable;
 
 public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 {

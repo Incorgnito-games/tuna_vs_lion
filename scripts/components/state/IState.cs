@@ -1,5 +1,4 @@
 namespace TunaVsLion.scripts.components.state;
-using Godot;
 
 public interface IState
 {

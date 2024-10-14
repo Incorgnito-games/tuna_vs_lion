@@ -1,6 +1,6 @@
-using Godot;
-using System;
 namespace TunaVsLion.scripts.ui;
+
+using Godot;
 
 public partial class WorldStats : BoxContainer
 {

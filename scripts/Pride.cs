@@ -1,11 +1,13 @@
-using System;
-using Godot;
-using TunaVsLion.scripts.meat.playable;
-using System.Collections.Generic;
-using TunaVsLion.scripts.components.state.lionStates;
-using TunaVsLion.scripts.meat.nonplayable;
-
 namespace TunaVsLion.scripts;
+
+using System;
+using System.Collections.Generic;
+using Godot;
+
+using meat.playable;
+using meat.nonplayable;
+using components.state.lionStates;
+
 
 public partial class Pride : Node2D
 {

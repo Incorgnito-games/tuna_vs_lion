@@ -1,9 +1,11 @@
-using Godot;
-using TunaVsLion.scripts.meat.nonplayable;
+namespace TunaVsLion.scripts;
+
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 
-namespace TunaVsLion.scripts;
+using meat.nonplayable;
+
 
 public partial class Enviroment : Node
 {

@@ -1,15 +1,21 @@
-using TunaVsLion.scripts.meat.nonplayable;
-
 namespace TunaVsLion.scripts.components.state.Movement;
-using TunaVsLion.scripts.meat;
+
 using Godot;
 
+using meat.nonplayable;
+using meat.playable;
 
 public partial class RandomWalk: State
 {
+    //character modifiers
     [Export] private AbstractNonPlayableMeat _meat;
     private Vector2 _currentBearing;
+    
+    //signal fields
+    [Export] private Area2D _detectionArea;
     private Timer randSpeedAdjustementTimer = new Timer();
+    private CustomStateSignals _stateTransitionSignal;
+    
     public override void Enter()
     {
         if (_meat is null)
@@ -28,6 +34,10 @@ public partial class RandomWalk: State
     }
     public override void _Ready()
     {
+        //state transition setup
+        _detectionArea.BodyEntered += OnDetectionAreaBodyEntered;
+	    _stateTransitionSignal = GetNode<CustomStateSignals>("/root/CustomStateSignals");
+        
         //Timer Setup
         randSpeedAdjustementTimer.SetAutostart(true);
         randSpeedAdjustementTimer.SetWaitTime(GD.RandRange(1,8));
@@ -48,7 +58,7 @@ public partial class RandomWalk: State
 
     private void _randomWalk()
     {
-        _meat.Velocity = _currentBearing * (float)_meat.baseSpeed;
+        _meat.Velocity = _currentBearing * _meat.BaseSpeed;
 
         _meat.MoveAndSlide();
     }
@@ -80,5 +90,17 @@ public partial class RandomWalk: State
     public void OnBearingAdjustmentTimeout()
     {
         this._setRandomBearing();
+    }
+
+    public void OnDetectionAreaBodyEntered(Node2D body)
+    {
+        if (body is null)
+            return;
+        
+        if (body is AbstractPlayableMeat)
+        {
+			_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "flee");
+        }
+        
     }
 }

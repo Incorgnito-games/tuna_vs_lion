@@ -1,8 +1,9 @@
+namespace TunaVsLion.scripts.components.state;
+
 using Godot;
 using System;
 using System.Collections.Generic;
 
-namespace TunaVsLion.scripts.components.state;
 
 public partial class StateMachine : Node
 {

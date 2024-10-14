@@ -1,12 +1,6 @@
-
-using TunaVsLion.scripts.components;
-using Godot;
-using TunaVsLion.scripts.meat.nonplayable;
-using System.Collections.Generic;
-using System.Linq;
-
-
 namespace TunaVsLion.scripts.meat.playable;
+
+using Godot;
 
 public partial class Lion: AbstractPlayableMeat
 {
