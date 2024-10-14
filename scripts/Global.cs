@@ -7,7 +7,19 @@ public class Global
 
     public static Vector2 GetRandomPointOnLand()
     {
-        return new Vector2(GD.RandRange(0,WORLD_WIDTH), GD.RandRange(0, WORLD_HEIGHT));
+        int gridSize = 5;
+        int cols = WORLD_WIDTH / gridSize;
+        int rows = WORLD_HEIGHT / gridSize;
+
+        long randomCol = GD.Randi() % cols;
+        long randomRow = GD.Randi() % rows;
+
+        float x = randomCol * gridSize + GD.RandRange(0, gridSize);
+        float y = randomRow * gridSize + GD.RandRange(0, gridSize);
+
+        return new Vector2(x, y);
+        
+      //  return new Vector2(GD.RandRange(0,WORLD_WIDTH), GD.RandRange(0, WORLD_HEIGHT));
     }
 
 

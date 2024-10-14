@@ -19,6 +19,7 @@ public partial class Enviroment : Node
 	[Signal]
 	public delegate void UpdateRabbitPopEventHandler(int rabbitPop);	
 	
+	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -68,6 +69,19 @@ public partial class Enviroment : Node
 	{
 		_currentRabbitPop--;
 		EmitSignal(SignalName.UpdateRabbitPop, _currentRabbitPop);
+		Timer newBunny = new Timer();
+		newBunny.OneShot = true;
+		newBunny.WaitTime = GD.RandRange(5,20);
+		newBunny.Timeout += OnBunnyBorn;
+		AddChild(newBunny);
+		newBunny.Start();
+
 	}
+
+	public void OnBunnyBorn()
+	{
+		SpawnRabbit();
+	}
+	
 
 }
