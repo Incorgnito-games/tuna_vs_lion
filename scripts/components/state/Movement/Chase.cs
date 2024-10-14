@@ -10,26 +10,25 @@ using state;
 public partial class Chase: State
 {
 	//character modifiers
-	[Export] private AbstractPlayableMeat _character;
+	[Export] private AbstractPlayableMeat _meat;
 	[Export] private float _chaseMultiplier = 1.5f;
-	[Export] private float _staminaUsagePerFrame = 1.0f;
+	[Export] private float _staminaUsagePerFrame = 2.0f;
 	
 	
 	//debug
 	
 	//Signal Fields
 	[Export]private Area2D _detectionArea;
-	private CustomStateSignals _stateTransitionSignal;
 	private float _distanceToTarget;
 	
 	public override void Enter()
 	{
-		if (_character is null)
+		if (_meat is null)
 			return;
 
-		if (!_character.IsPlayer)
+		if (!_meat.IsPlayer)
 		{
-			GD.Print($"{_character} ==> Chasing");
+			GD.Print($"{_meat} ==> Chasing");
 			_autoChase();
 		}
 	
@@ -41,7 +40,7 @@ public partial class Chase: State
 
     public override void _Ready()
     {
-	    _stateTransitionSignal = GetNode<CustomStateSignals>("/root/CustomStateSignals");
+        base._Ready();
 	    _detectionArea.BodyExited += OnBodyExitedDetectionArea;
     }
 
@@ -51,15 +50,24 @@ public partial class Chase: State
     
     private void _autoChase()
     {
-	    if (_character.CurrentTarget is not null && _character.CurrentTarget.IsInsideTree())
+	    if (_meat.CurrentTarget is not null && _meat.CurrentTarget.IsInsideTree())
 	    {
+		    //reduce stamina
+		    if (_meat.Stamina > 0)
+		    {
+			    _meat.Stamina -= _staminaUsagePerFrame;
+		    }
+		    else
+		    {
+				_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "rest");
+		    }
 			//distance debug	
-			var targetPosition = _character.CurrentTarget.GlobalPosition;
-			_distanceToTarget = (targetPosition - _character.GlobalPosition).Length();
+			var targetPosition = _meat.CurrentTarget.GlobalPosition;
+			_distanceToTarget = (targetPosition - _meat.GlobalPosition).Length();
 			
 			//positioning
-			var newDir = (targetPosition - _character.GlobalPosition).Normalized();
-			_character.Velocity = newDir * _character.BaseSpeed * _chaseMultiplier;
+			var newDir = (targetPosition - _meat.GlobalPosition).Normalized();
+			_meat.Velocity = newDir * _meat.BaseSpeed * _chaseMultiplier;
 
 			// GD.Print(_distanceToTarget);
 		    
@@ -85,7 +93,7 @@ public partial class Chase: State
 				
 				
 			// }
-			_character.MoveAndSlide(); 
+			_meat.MoveAndSlide(); 
 	    }
 
     }
@@ -96,9 +104,9 @@ public partial class Chase: State
 
     public override void UpdatePhysicsProcess(double delta)
     {
-	    if (_character is not null)
+	    if (_meat is not null)
 	    {
-		    if (!_character.IsPlayer)
+		    if (!_meat.IsPlayer)
 		    {
 			    _autoChase();
 		    }
@@ -119,18 +127,18 @@ public partial class Chase: State
 	    if (body is null)
 		    return;
 
-	    if (_character.ChaseTargets.Count == 0)
+	    if (_meat.ChaseTargets.Count == 0)
 	    {
-		    _character.CurrentTarget = null;
-		    _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "lionidle");
+		    _meat.CurrentTarget = null;
+		    _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "idle");
 	    }
 
-	    if (_character.ChaseTargets.Contains(body))
+	    if (_meat.ChaseTargets.Contains(body))
 	    {
-		    _character.ChaseTargets.Remove((AbstractNonPlayableMeat)body);
-		    if (_character.ChaseTargets.Count != 0)
+		    _meat.ChaseTargets.Remove((AbstractNonPlayableMeat)body);
+		    if (_meat.ChaseTargets.Count != 0)
 		    {
-			    _character.CurrentTarget = _character.GetClosetTarget();
+			    _meat.CurrentTarget = _meat.GetClosetTarget();
 		    }
 	    }
 

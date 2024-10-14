@@ -6,13 +6,10 @@ using System.Linq;
 using nonplayable;
 
 
-public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
+public abstract partial class AbstractPlayableMeat : AbstractMeat, IMeat
 {
 	//Character Fields
-	[Export]public int MeatValue = 1;
-	[Export]public float BaseSpeed = 10.0f;
 	[Export] public float PlayerBaseSpeed = 50.0f;
-	[Export] public float Stamina = 100.0f;
 	[Export]public bool IsPlayer { get; set; }
 	[Export] public string CharacterName { get; set; } = "The King";
 
@@ -24,7 +21,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	//Physics Fields
 
 	//Debug Fields
-	protected Label _meatMeter;
+	
 	protected Label _nameLabel;
 	
 	//**************************
@@ -36,12 +33,13 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 		{
 			this.BaseSpeed = PlayerBaseSpeed;
 		}
-	    _meatMeter = GetNode<Label>("meatMeter");
+	    
 		_nameLabel = GetNode<Label>("nameLabel"); 
 	    
 		//play hud labeling
-		_meatMeter.Text = MeatValue.ToString();
 		_nameLabel.Text = CharacterName;
+		BaseSpeed = 10.0f;
+		Stamina = MaxStamina;
 
 	}
 		
@@ -77,11 +75,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	// Mechanics
 	//**********************
 	
-	public override void _Process(double delta)
-    {
-	    if(_meatMeter is not null)
-			_meatMeter.Text = MeatValue.ToString();
-    }
+	
 	public AbstractNonPlayableMeat GetClosetTarget()
 	{
 		return ChaseTargets.OrderBy(vec => this.Position.DistanceTo(vec.Position)).First();

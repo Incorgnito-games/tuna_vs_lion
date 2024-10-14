@@ -18,7 +18,7 @@ public partial class WorldStats : BoxContainer
 		if (_lionPride is not null)
 		{
 			_lionPride.UpdatePrideSize += OnPrideSizeUpdateSignal;
-			GD.Print("linon pride not null");
+			// GD.Print("linon pride not null");
 		}
 
 		if (_enviroment is not null)
@@ -36,13 +36,13 @@ public partial class WorldStats : BoxContainer
 
 	public void OnPrideSizeUpdateSignal(int prideSize)
 	{
-		GD.Print($"Pride Signal recieved ==> {prideSize}");
+		// GD.Print($"Pride Signal recieved ==> {prideSize}");
 		this._prideSize = prideSize;
 	}
 
 	public void OnRabbitPopUpdateSignal(int rabbitPop)
 	{
-		GD.Print($"Rabbit signal Recieved => {rabbitPop}");
+		// GD.Print($"Rabbit signal Recieved => {rabbitPop}");
 		this._rabbitPop = rabbitPop;
 	}
 }

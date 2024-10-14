@@ -10,13 +10,13 @@ public partial class LionIdle: State
 {
     [Export] private Pride _currentPride;
     [Export] private Lion _lion;
+    [Export] private float _staminaIdleIncrease = 0.1f;
     
     private int randSpeedMultiplier; 
     private float randRunWalkVelocity; 
     
     private Vector2 _newPos;
     private bool GetNewPos = false;
-	private CustomStateSignals _stateTransitionSignal;
 
     [Export]private Area2D _detectionArea;
 
@@ -53,6 +53,10 @@ public partial class LionIdle: State
     
     public override void UpdatePhysicsProcess(double delta)
     {
+        if (_lion.Stamina < _lion.MaxStamina)
+        {
+            _lion.Stamina += _staminaIdleIncrease;
+        }
         if (_lion is not null)
         {
             if(!_lion.IsPlayer)
@@ -63,9 +67,9 @@ public partial class LionIdle: State
 
     public override void _Ready()
     {
+        base._Ready();
         _detectionArea.BodyEntered += OnDetectionAreaBodyEntered;
          
-	    _stateTransitionSignal = GetNode<CustomStateSignals>("/root/CustomStateSignals");
         //Timer Setup
         randSpeedAdjustementTimer.SetAutostart(true);
         randSpeedAdjustementTimer.SetWaitTime(GD.RandRange(1,8));
@@ -138,12 +142,12 @@ public partial class LionIdle: State
 	    
         if (body is AbstractNonPlayableMeat)
         {
-            GD.Print($"{_lion} ==> Spotted Rabbit {body}");
+            // GD.Print($"{_lion} ==> Spotted Rabbit {body}");
             _lion.ChaseTargets.Add((AbstractNonPlayableMeat)body);
             string result = "[" + string.Join(", ", _lion.ChaseTargets.Select(node => node.ToString())) + "]";
-            GD.Print($"{_lion} Targetlist ==> {result}");
+            // GD.Print($"{_lion} Targetlist ==> {result}");
             _lion.CurrentTarget = _lion.GetClosetTarget(); 
-            GD.Print($"{_lion} ==> current target ==> {_lion.CurrentTarget}");
+            // GD.Print($"{_lion} ==> current target ==> {_lion.CurrentTarget}");
             _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "chase");
 		   
         }

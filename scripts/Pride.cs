@@ -46,10 +46,10 @@ public partial class Pride : Node2D
 	public override void _Ready()
 	{
 		_prideInfluence =
-			 GetNode<CollisionShape2D>("lionPlayer/Area2D/CollisionShape2D");
+			 GetNode<CollisionShape2D>("lionPlayer/prideArea/CollisionShape2D");
 		_prideRadius = ((CircleShape2D)_prideInfluence.Shape).Radius;
 		_Initiate();
-		GD.Print(prideSize);
+		// GD.Print(prideSize);
 		CallDeferred(nameof(EmitSignalsInReady));
 	}
 
@@ -82,7 +82,7 @@ public partial class Pride : Node2D
 				GD.Print(e);
 			}
 			
-			var lionState = _lionPride[i].GetNode<LionIdle>("./StateMachine/LionIdle");
+			var lionState = _lionPride[i].GetNode<LionIdle>("StateMachine/Idle");
 			lionState.SetPride(this);
 			
 			AddChild(_lionPride[i]);
@@ -123,29 +123,29 @@ public partial class Pride : Node2D
 
 	public void OnEnviromentNonPlayableMeatExitingTree(Node2D body)
 	{
-		GD.Print("rabbit freed signal called in pride");
+		// GD.Print("rabbit freed signal called in pride");
 		foreach(Lion lion in _lionPride)
 		{
 			if (lion.CurrentTarget == body)
 			{
 				lion.CurrentTarget = null;
-				GD.Print($"{lion} currenttarget set to null");
+				// GD.Print($"{lion} currenttarget set to null");
 			}
 			if (lion.ChaseTargets.Contains((AbstractNonPlayableMeat)body))
 			{
 				if (lion.ChaseTargets.Remove((AbstractNonPlayableMeat)body))
 				{
-					GD.Print($"{body} removed from {lion} chasetarget list");
+					// GD.Print($"{body} removed from {lion} chasetarget list");
 				}
 				else
 				{
-					GD.Print($"unable to remove {body} from {lion} chasetarget list");
+					// GD.Print($"unable to remove {body} from {lion} chasetarget list");
 					
 				}
 			}
 			else
 			{
-				GD.Print($"{lion} ==> targetList doesnt include {body}");
+				// GD.Print($"{lion} ==> targetList doesnt include {body}");
 			}
 		}
 	}

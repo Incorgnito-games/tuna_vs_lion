@@ -1,0 +1,57 @@
+[gd_scene load_steps=3 format=3 uid="uid://clnlqn5f0x656"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g5dgv"]
+line_spacing = 1.0
+font_size = 12
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_22llr"]
+line_spacing = 1.0
+font_size = 12
+font_color = Color(0, 0.0745098, 0, 1)
+outline_color = Color(0.00392157, 0.00392157, 0.054902, 1)
+
+[node name="BoxContainer" type="BoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.195531, 0.212434)
+vertical = true
+
+[node name="Health" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="Health"]
+layout_mode = 2
+text = "Health:"
+label_settings = SubResource("LabelSettings_g5dgv")
+
+[node name="HealthMeter" type="Label" parent="Health"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_22llr")
+
+[node name="Stamina" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="StaminaLabel" type="Label" parent="Stamina"]
+layout_mode = 2
+text = "Stamina:"
+label_settings = SubResource("LabelSettings_g5dgv")
+
+[node name="StaminaMeter" type="Label" parent="Stamina"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_22llr")
+
+[node name="MeatContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MeatLabel" type="Label" parent="MeatContainer"]
+layout_mode = 2
+text = "Meat:"
+label_settings = SubResource("LabelSettings_g5dgv")
+
+[node name="MeatMeter" type="Label" parent="MeatContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_22llr")

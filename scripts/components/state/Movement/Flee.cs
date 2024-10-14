@@ -16,7 +16,6 @@ public partial class Flee: State
 	
 	//Signal Fields
 	[Export]private Area2D _detectionArea;
-	private CustomStateSignals _stateTransitionSignal;
 	private float _distanceFromAttacker;
 	
 	public override void Enter()
@@ -34,7 +33,7 @@ public partial class Flee: State
 
     public override void _Ready()
     {
-	    _stateTransitionSignal = GetNode<CustomStateSignals>("/root/CustomStateSignals");
+        base._Ready();
 	    _detectionArea.BodyExited += OnDetectionAreaBodyExited;
     }
 
@@ -46,6 +45,15 @@ public partial class Flee: State
     {
 	    if (_meat.CurrentAttacker is not null && _meat.CurrentAttacker.IsInsideTree())
 	    {
+		    //reduce stamina
+		    if (_meat.Stamina > 0)
+		    {
+			    _meat.Stamina -= _staminaUsagePerFrame;
+		    }
+		    else
+		    {
+			    _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "rest");
+		    }
 			//distance debug	
 			var targetPosition = _meat.CurrentAttacker.GlobalPosition;
 			_distanceFromAttacker = (targetPosition - _meat.GlobalPosition).Length();
@@ -84,7 +92,7 @@ public partial class Flee: State
 		    return;
 	    if (body == _meat.CurrentAttacker)
 	    {
-			_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "randomWalk");
+			_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "idle");
 	    } 
     }
     

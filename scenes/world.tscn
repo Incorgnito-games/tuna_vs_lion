@@ -20,6 +20,9 @@ position = Vector2(799, 280)
 [node name="lionPlayer" parent="pride" index="0"]
 PlayerBaseSpeed = 100.0
 
+[node name="Idle" parent="pride/lionPlayer/StateMachine" index="0" node_paths=PackedStringArray("_currentPride")]
+_currentPride = NodePath("../../..")
+
 [connection signal="child_exiting_tree" from="Enviroment" to="pride" method="OnEnviromentNonPlayableMeatExitingTree"]
 
 [editable path="Enviroment/Rabbit"]

@@ -10,11 +10,11 @@ public partial class RandomWalk: State
     //character modifiers
     [Export] private AbstractNonPlayableMeat _meat;
     private Vector2 _currentBearing;
+    [Export] private float _staminaIdleIncrease = 0.1f;
     
     //signal fields
     [Export] private Area2D _detectionArea;
     private Timer randSpeedAdjustementTimer = new Timer();
-    private CustomStateSignals _stateTransitionSignal;
     
     public override void Enter()
     {
@@ -34,9 +34,9 @@ public partial class RandomWalk: State
     }
     public override void _Ready()
     {
+        base._Ready();
         //state transition setup
         _detectionArea.BodyEntered += OnDetectionAreaBodyEntered;
-	    _stateTransitionSignal = GetNode<CustomStateSignals>("/root/CustomStateSignals");
         
         //Timer Setup
         randSpeedAdjustementTimer.SetAutostart(true);
@@ -50,6 +50,10 @@ public partial class RandomWalk: State
 
     public override void UpdatePhysicsProcess(double delta)
     {
+        if (_meat.Stamina < _meat.MaxStamina)
+        {
+            _meat.Stamina += _staminaIdleIncrease;
+        }
         if (_meat is not null)
         {
             _randomWalk();

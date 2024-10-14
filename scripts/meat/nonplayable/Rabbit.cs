@@ -11,6 +11,8 @@ public partial class Rabbit : AbstractNonPlayableMeat
 	private Area2D _attackBox;
 	private Area2D _detectionArea;
 	private Label _meatMeter;
+	private Label _staminaMeter;
+	private Label _healthMeter;
 
 	
 	[Export]
@@ -22,9 +24,12 @@ public partial class Rabbit : AbstractNonPlayableMeat
 	
 	public override void _Ready()
 	{
+		base._Ready();
 		_attackBox = GetNode<Area2D>("AttackBox");
 		_detectionArea = GetNode<Area2D>("DetectionArea");
-		_meatMeter = GetNode<Label>("MeatMeter");
+		_meatMeter = GetNode<Label>("BoxContainer/MeatContainer/MeatMeter");
+		_staminaMeter = GetNode<Label>("BoxContainer/Stamina/StaminaMeter");
+		_healthMeter = GetNode<Label>("BoxContainer/Health/HealthMeter");
 		
 		_detectionArea.BodyEntered += OnBodyEnteredDetectionArea;
 		_attackBox.BodyEntered += Enviroment.OnRabbitEaten;
@@ -33,8 +38,22 @@ public partial class Rabbit : AbstractNonPlayableMeat
 		
 		
 		_meatMeter.Text = MeatValue.ToString();
+		_staminaMeter.Text = Stamina.ToString();
+		_healthMeter.Text = Health.ToString();
 	}
-	
+
+	//****************
+	//Mechanics
+	//****************
+	public override void _Process(double delta)
+	{
+		if(_meatMeter is not null)
+			_meatMeter.Text = MeatValue.ToString();
+		if(_staminaMeter is not null)
+			_staminaMeter.Text = Stamina.ToString();
+		if(_healthMeter is not null)
+			_healthMeter.Text = Health.ToString();
+	}
 	//****************
 	// Signal Callback
 	//****************
@@ -48,11 +67,11 @@ public partial class Rabbit : AbstractNonPlayableMeat
 			{
 				if (((AbstractPlayableMeat)body).ChaseTargets.Remove(this))
 				{
-					GD.Print($"{this.ToString()} removed from {body} chasetargets list");
+					// GD.Print($"{this.ToString()} removed from {body} chasetargets list");
 				}
 				else
 				{
-					GD.Print($"{this.ToString()} not removed from {body} chase targets list");
+					// GD.Print($"{this.ToString()} not removed from {body} chase targets list");
 				}
 				this.QueueFree();
 				_meatMeter.Text = MeatValue.ToString();
@@ -61,11 +80,11 @@ public partial class Rabbit : AbstractNonPlayableMeat
 			((AbstractPlayableMeat)body).CurrentTarget = null;
 			if (Enviroment.LandMeat.Remove(this))
 			{
-				GD.Print($"{this.ToString()} removed from enviroment meat list");
+				// GD.Print($"{this.ToString()} removed from enviroment meat list");
 			}
 			else
 			{
-				GD.Print($"{this.ToString()} was notremoved from enviroment meat list");
+				// GD.Print($"{this.ToString()} was notremoved from enviroment meat list");
 				
 			}
 			
