@@ -24,13 +24,12 @@ public partial class Chase: State
 	
 	public override void Enter()
 	{
-		GD.Print("Entering chase state");
 		if (_character is null)
 			return;
 
 		if (!_character.IsPlayer)
 		{
-			GD.Print("Chasing");
+			GD.Print($"{_character} ==> Chasing");
 			_autoChase();
 		}
 	
@@ -52,7 +51,7 @@ public partial class Chase: State
     
     private void _autoChase()
     {
-	    if (_character.CurrentTarget is not null)
+	    if (_character.CurrentTarget is not null && _character.CurrentTarget.IsInsideTree())
 	    {
 			//distance debug	
 			var targetPosition = _character.CurrentTarget.GlobalPosition;

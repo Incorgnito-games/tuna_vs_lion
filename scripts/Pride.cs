@@ -3,6 +3,7 @@ using Godot;
 using TunaVsLion.scripts.meat.playable;
 using System.Collections.Generic;
 using TunaVsLion.scripts.components.state.lionStates;
+using TunaVsLion.scripts.meat.nonplayable;
 
 namespace TunaVsLion.scripts;
 
@@ -116,6 +117,35 @@ public partial class Pride : Node2D
 	public void OnPrideMemberMovementTimeout()
 	{
 		
+	}
+
+	public void OnEnviromentNonPlayableMeatExitingTree(Node2D body)
+	{
+		GD.Print("rabbit freed signal called in pride");
+		foreach(Lion lion in _lionPride)
+		{
+			if (lion.CurrentTarget == body)
+			{
+				lion.CurrentTarget = null;
+				GD.Print($"{lion} currenttarget set to null");
+			}
+			if (lion.ChaseTargets.Contains((AbstractNonPlayableMeat)body))
+			{
+				if (lion.ChaseTargets.Remove((AbstractNonPlayableMeat)body))
+				{
+					GD.Print($"{body} removed from {lion} chasetarget list");
+				}
+				else
+				{
+					GD.Print($"unable to remove {body} from {lion} chasetarget list");
+					
+				}
+			}
+			else
+			{
+				GD.Print($"{lion} ==> targetList doesnt include {body}");
+			}
+		}
 	}
 
 	//*********************

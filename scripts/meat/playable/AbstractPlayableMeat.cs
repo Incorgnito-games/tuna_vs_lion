@@ -95,7 +95,7 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	//Getters + Setters
 	//***************************
 
-	 public virtual string toString()
+	 public override string ToString()
 	 {
 		 return CharacterName;
 		 
@@ -104,5 +104,5 @@ public abstract partial class AbstractPlayableMeat : CharacterBody2D, IMeat
 	 //****************************
 	 // Signal Callbacks
 	 //****************************
-	
+	 
 }

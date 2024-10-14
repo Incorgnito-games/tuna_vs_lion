@@ -1,3 +1,4 @@
+using TunaVsLion.scripts.components.state;
 using TunaVsLion.scripts.meat.playable;
 
 namespace TunaVsLion.scripts.meat.nonplayable;
@@ -8,11 +9,12 @@ using TunaVsLion.scripts.meat.nonplayable;
 
 public partial class Rabbit : AbstractNonPlayableMeat
 {
-	public string RabbitName;
+	public string RabbitName = "Dudley";
 	private Area2D _attackBox;
 	private Area2D _detectionArea;
 	private Label _meatMeter;
 
+	
 	[Export]
 	public Enviroment Enviroment
 	{
@@ -25,10 +27,12 @@ public partial class Rabbit : AbstractNonPlayableMeat
 		_attackBox = GetNode<Area2D>("AttackBox");
 		_detectionArea = GetNode<Area2D>("DetectionArea");
 		_meatMeter = GetNode<Label>("MeatMeter");
-
+		
 		_detectionArea.BodyEntered += OnBodyEnteredDetectionArea;
 		_attackBox.BodyEntered += Enviroment.OnRabbitEaten;
 		_attackBox.BodyEntered += OnBodyEnterAttackBox;
+		
+		
 		
 		_meatMeter.Text = MeatValue.ToString();
 	}
@@ -46,17 +50,28 @@ public partial class Rabbit : AbstractNonPlayableMeat
 			{
 				if (((AbstractPlayableMeat)body).ChaseTargets.Remove(this))
 				{
-					GD.Print("rabbit removed from chase possibilities removed");
+					GD.Print($"{this.ToString()} removed from {body} chasetargets list");
 				}
 				else
 				{
-					GD.Print("item not removed");
+					GD.Print($"{this.ToString()} not removed from {body} chase targets list");
 				}
 				this.QueueFree();
 				_meatMeter.Text = MeatValue.ToString();
 			}
-			body.MeatValue++ as AbstractNonPlayableMeat;
-			GD.Print($"{Name} ==> Chomp!");
+			((AbstractPlayableMeat)body).MeatValue++;
+			((AbstractPlayableMeat)body).CurrentTarget = null;
+			if (Enviroment.LandMeat.Remove(this))
+			{
+				GD.Print($"{this.ToString()} removed from enviroment meat list");
+			}
+			else
+			{
+				GD.Print($"{this.ToString()} was notremoved from enviroment meat list");
+				
+			}
+			
+			GD.Print($"{body} ==> Chomp!");
 		}
 	}
 

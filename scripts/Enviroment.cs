@@ -2,20 +2,18 @@ using Godot;
 using TunaVsLion.scripts.meat.nonplayable;
 using System.Collections.Generic;
 using System.Linq;
-using TunaVsLion;
-using TunaVsLion.scripts.components.state.Movement;
 
 namespace TunaVsLion.scripts;
 
 public partial class Enviroment : Node
 {
-	private readonly List<AbstractNonPlayableMeat> _landMeat = new List<AbstractNonPlayableMeat>();
+	public readonly List<AbstractNonPlayableMeat> LandMeat = new List<AbstractNonPlayableMeat>();
 	
-
+	
 	//rabbits
 	[Export] public int maxRabbitPopulation = 5;
 	private static int _currentRabbitPop = 1;
-
+	private Rabbit _dudleyTheRabbit;
 	[Signal]
 	public delegate void UpdateRabbitPopEventHandler(int rabbitPop);	
 	
@@ -31,6 +29,9 @@ public partial class Enviroment : Node
 	}
 	private void _initiate()
 	{
+		_dudleyTheRabbit = GetNode<Rabbit>("Rabbit");
+		LandMeat.Add(_dudleyTheRabbit);
+		
 		for (var i = _currentRabbitPop; i < maxRabbitPopulation; i++)
 		{
 			SpawnRabbit();
@@ -49,10 +50,10 @@ public partial class Enviroment : Node
 		Rabbit newBunny = (Rabbit)ResourceLoader.Load<PackedScene>("res://scenes/meat/nonplayable/land/rabbit.tscn").Instantiate();
 		newBunny.RabbitName = $"Rabbit-{_currentRabbitPop}";
 		newBunny.Enviroment = this;
-		_landMeat.Add(newBunny);
-		_landMeat.Last().Position = Global.GetRandomPointOnLand();
+		LandMeat.Add(newBunny);
+		LandMeat.Last().Position = Global.GetRandomPointOnLand();
 		// var meatState = _landMeat[i].GetNode<RandomWalk>("Rabbit/StateMachine/RandomWalk");
-		AddChild(_landMeat.Last());
+		AddChild(LandMeat.Last());
 		
 		_currentRabbitPop++;
 		EmitSignal(SignalName.UpdateRabbitPop, _currentRabbitPop);

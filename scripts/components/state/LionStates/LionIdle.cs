@@ -23,7 +23,6 @@ public partial class LionIdle: State
     private Timer newPosTimer = new Timer();
     public override void Enter()
     {
-        GD.Print("Entering Idle State");
         if (_currentPride is null)
         {
             return;
@@ -37,7 +36,7 @@ public partial class LionIdle: State
             return;
         }
         
-        GD.Print("Idle!");
+        GD.Print($"{_lion} ==> Idling!");
         _idleRandomWalk();
     }
 
@@ -138,12 +137,12 @@ public partial class LionIdle: State
 	    
         if (body is AbstractNonPlayableMeat)
         {
-            GD.Print("Rabbit Spotted");
+            GD.Print($"{_lion} ==> Spotted Rabbit {body}");
             _lion.ChaseTargets.Add((AbstractNonPlayableMeat)body);
-            string result = "[" + string.Join(", ", _lion.ChaseTargets.Select(node => node.Name)) + "]";
-            // GD.Print(result);
+            string result = "[" + string.Join(", ", _lion.ChaseTargets.Select(node => node.ToString())) + "]";
+            GD.Print($"{_lion} Targetlist ==> {result}");
             _lion.CurrentTarget = _lion.GetClosetTarget(); 
-            GD.Print($"current target ==> {_lion.CurrentTarget.Name}");
+            GD.Print($"{_lion} ==> current target ==> {_lion.CurrentTarget}");
             _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "chase");
 		   
         }
