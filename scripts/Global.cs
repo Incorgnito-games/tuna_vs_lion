@@ -10,8 +10,8 @@ public class Global
     public static Vector2 GetRandomPointOnLand()
     {
         int gridSize = 5;
-        int cols = WORLD_WIDTH / gridSize;
-        int rows = WORLD_HEIGHT / gridSize;
+        int cols = (WORLD_WIDTH-10) / gridSize;
+        int rows = (WORLD_HEIGHT-10) / gridSize;
 
         long randomCol = GD.Randi() % cols;
         long randomRow = GD.Randi() % rows;

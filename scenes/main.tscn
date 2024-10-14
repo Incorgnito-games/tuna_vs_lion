@@ -16,64 +16,76 @@ script = ExtResource("1_n5xmq")
 [node name="World" parent="." instance=ExtResource("1_5geho")]
 position = Vector2(3, 1)
 
-[node name="WorldStats" type="BoxContainer" parent="." node_paths=PackedStringArray("_lionPride", "_enviroment")]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="ColorRect" parent="World/Sea" index="0"]
+offset_left = -1152.0
+offset_right = 0.0
+
+[node name="Camera2D" parent="World/pride/lionPlayer" index="8"]
+zoom = Vector2(0.95, 1)
+limit_bottom = 648
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="WorldStats" type="BoxContainer" parent="CanvasLayer" node_paths=PackedStringArray("_lionPride", "_enviroment")]
+offset_left = 13.0
+offset_top = 12.0
+offset_right = 119.0
+offset_bottom = 116.0
 alignment = 2
 vertical = true
 script = ExtResource("3_hnqk2")
-_lionPride = NodePath("../World/pride")
-_enviroment = NodePath("../World/Enviroment")
+_lionPride = NodePath("../../World/pride")
+_enviroment = NodePath("../../World/Enviroment")
 
-[node name="LionPopCont" type="HBoxContainer" parent="WorldStats"]
+[node name="LionPopCont" type="HBoxContainer" parent="CanvasLayer/WorldStats"]
 layout_mode = 2
 
-[node name="LionPopLabel" type="Label" parent="WorldStats/LionPopCont"]
+[node name="LionPopLabel" type="Label" parent="CanvasLayer/WorldStats/LionPopCont"]
 layout_mode = 2
 text = "Lion Pop:"
 
-[node name="LionPopValue" type="Label" parent="WorldStats/LionPopCont"]
+[node name="LionPopValue" type="Label" parent="CanvasLayer/WorldStats/LionPopCont"]
 layout_mode = 2
 text = "_"
 label_settings = SubResource("LabelSettings_0u8fl")
 
-[node name="RabbitPopCont" type="HBoxContainer" parent="WorldStats"]
+[node name="RabbitPopCont" type="HBoxContainer" parent="CanvasLayer/WorldStats"]
 layout_mode = 2
 
-[node name="RabbitPopLabel" type="Label" parent="WorldStats/RabbitPopCont"]
+[node name="RabbitPopLabel" type="Label" parent="CanvasLayer/WorldStats/RabbitPopCont"]
 layout_mode = 2
 text = "Rabbit Pop:"
 horizontal_alignment = 2
 
-[node name="RabbitPopValue" type="Label" parent="WorldStats/RabbitPopCont"]
+[node name="RabbitPopValue" type="Label" parent="CanvasLayer/WorldStats/RabbitPopCont"]
 layout_mode = 2
 text = "_
 "
 label_settings = SubResource("LabelSettings_8uvtq")
 
-[node name="MeatMeterCont" type="HBoxContainer" parent="WorldStats"]
+[node name="MeatMeterCont" type="HBoxContainer" parent="CanvasLayer/WorldStats"]
 layout_mode = 2
 
-[node name="MeatMeterLabel" type="Label" parent="WorldStats/MeatMeterCont"]
+[node name="MeatMeterLabel" type="Label" parent="CanvasLayer/WorldStats/MeatMeterCont"]
 layout_mode = 2
 text = "Meat Meter:"
 horizontal_alignment = 2
 
-[node name="MeatMeterValue" type="Label" parent="WorldStats/MeatMeterCont"]
+[node name="MeatMeterValue" type="Label" parent="CanvasLayer/WorldStats/MeatMeterCont"]
 layout_mode = 2
 text = "_
 "
 label_settings = SubResource("LabelSettings_8uvtq")
 
-[node name="ResourceCont" type="HBoxContainer" parent="WorldStats"]
+[node name="ResourceCont" type="HBoxContainer" parent="CanvasLayer/WorldStats"]
 layout_mode = 2
 
-[node name="ResourceLabel" type="Label" parent="WorldStats/ResourceCont"]
+[node name="ResourceLabel" type="Label" parent="CanvasLayer/WorldStats/ResourceCont"]
 layout_mode = 2
 text = "Resources:"
 horizontal_alignment = 2
 
-[node name="ResourceValue" type="Label" parent="WorldStats/ResourceCont"]
+[node name="ResourceValue" type="Label" parent="CanvasLayer/WorldStats/ResourceCont"]
 layout_mode = 2
 text = "_
 "

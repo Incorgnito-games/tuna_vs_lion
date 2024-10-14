@@ -14,6 +14,7 @@ PrideLeader = NodePath("lionPlayer")
 
 [node name="lionPlayer" parent="." instance=ExtResource("1_uxq6p")]
 IsPlayer = true
+MaxStamina = 0.0
 
 [node name="prideArea" type="Area2D" parent="lionPlayer"]
 position = Vector2(-448, -289)
@@ -24,5 +25,7 @@ collision_mask = 0
 position = Vector2(447, 288)
 shape = SubResource("CircleShape2D_x30rw")
 debug_color = Color(0.798825, 0.419343, 0.117152, 0.42)
+
+[node name="Camera2D" type="Camera2D" parent="lionPlayer"]
 
 [editable path="lionPlayer"]

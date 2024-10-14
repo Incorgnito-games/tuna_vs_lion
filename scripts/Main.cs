@@ -10,8 +10,8 @@ public partial class Main : Node2D
 	{
 		// seed set for debugging
 		GD.Seed(12345);
-		_meatMeter = GetNode<Label>("WorldStats/MeatMeterCont/MeatMeterValue");
-		_resources = GetNode<Label>("WorldStats/ResourceCont/ResourceValue");
+		_meatMeter = GetNode<Label>("CanvasLayer/WorldStats/MeatMeterCont/MeatMeterValue");
+		_resources = GetNode<Label>("CanvasLayer/WorldStats/ResourceCont/ResourceValue");
 	
 		_meatMeter.Text = Global.MeatMeter.ToString();
 		_resources.Text = Global.Resources.ToString();
@@ -48,15 +48,15 @@ public partial class Main : Node2D
 						new Vector2(member.GlobalPosition.X, viewPortSize.Y);
 				}
 				
-				if (member.GlobalPosition.X > viewPortSize.X)
-				{
-					member.GlobalPosition = new Vector2(0,member.GlobalPosition.Y);
-				}
-				else if (member.GlobalPosition.X < 0) 
-				{
-					member.GlobalPosition =
-						new Vector2(viewPortSize.X, member.GlobalPosition.Y);
-				}
+				// if (member.GlobalPosition.X > viewPortSize.X)
+				// {
+				// 	member.GlobalPosition = new Vector2(0,member.GlobalPosition.Y);
+				// }
+				// else if (member.GlobalPosition.X < 0) 
+				// {
+				// 	member.GlobalPosition =
+				// 		new Vector2(viewPortSize.X, member.GlobalPosition.Y);
+				// }
 			
 		}
 

@@ -1,14 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvjumi8snsj3m"]
+[gd_scene load_steps=6 format=3 uid="uid://bvjumi8snsj3m"]
 
 [ext_resource type="Script" path="res://scripts/Enviroment.cs" id="1_8cdhj"]
 [ext_resource type="PackedScene" uid="uid://vt200a7jwto4" path="res://scenes/pride.tscn" id="2_ltmbt"]
 [ext_resource type="PackedScene" uid="uid://k6nc8felj3mj" path="res://scenes/meat/nonplayable/land/rabbit.tscn" id="2_qjadp"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ra3l1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gq03r"]
+
 [node name="World" type="Node2D"]
+
+[node name="Sea" type="Node" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Sea"]
+offset_left = -1153.0
+offset_right = -1.0
+offset_bottom = 650.0
+color = Color(0.246872, 0.567932, 0.99429, 0.341176)
 
 [node name="Enviroment" type="Node" parent="."]
 script = ExtResource("1_8cdhj")
-maxRabbitPopulation = 50
+maxRabbitPopulation = 25
 
 [node name="Rabbit" parent="Enviroment" node_paths=PackedStringArray("Enviroment") instance=ExtResource("2_qjadp")]
 position = Vector2(388, 318)
@@ -22,6 +34,36 @@ PlayerBaseSpeed = 100.0
 
 [node name="Idle" parent="pride/lionPlayer/StateMachine" index="0" node_paths=PackedStringArray("_currentPride")]
 _currentPride = NodePath("../../..")
+
+[node name="Camera2D" parent="pride/lionPlayer" index="8"]
+limit_left = -1152
+limit_top = 0
+limit_right = 1152
+limit_bottom = 650
+
+[node name="xBoundaries" type="Node" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="xBoundaries"]
+position = Vector2(1157, 272)
+scale = Vector2(0.5, 50)
+collision_mask = 19
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="xBoundaries/StaticBody2D"]
+shape = SubResource("RectangleShape2D_ra3l1")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="xBoundaries"]
+position = Vector2(-1157, 272)
+scale = Vector2(0.5, 50)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="xBoundaries/StaticBody2D2"]
+shape = SubResource("RectangleShape2D_gq03r")
+
+[node name="Land" type="Node" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Land"]
+offset_right = 1152.0
+offset_bottom = 650.0
+color = Color(0.952941, 0.611765, 0.443137, 0.341176)
 
 [connection signal="child_exiting_tree" from="Enviroment" to="pride" method="OnEnviromentNonPlayableMeatExitingTree"]
 
