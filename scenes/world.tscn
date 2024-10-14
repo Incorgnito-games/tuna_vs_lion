@@ -9,8 +9,9 @@
 [node name="Enviroment" type="Node" parent="."]
 script = ExtResource("1_8cdhj")
 
-[node name="Rabbit" parent="Enviroment" instance=ExtResource("2_qjadp")]
+[node name="Rabbit" parent="Enviroment" node_paths=PackedStringArray("Enviroment") instance=ExtResource("2_qjadp")]
 position = Vector2(388, 318)
+Enviroment = NodePath("..")
 
 [node name="pride" parent="." instance=ExtResource("2_ltmbt")]
 position = Vector2(799, 280)

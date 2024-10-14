@@ -1,10 +1,62 @@
-[gd_scene load_steps=3 format=3 uid="uid://bemb3f4n37ku5"]
+[gd_scene load_steps=6 format=3 uid="uid://bemb3f4n37ku5"]
 
 [ext_resource type="PackedScene" uid="uid://bvjumi8snsj3m" path="res://scenes/world.tscn" id="1_5geho"]
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_n5xmq"]
+[ext_resource type="Script" path="res://scripts/UI/WorldStats.cs" id="3_hnqk2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0u8fl"]
+font_color = Color(0.00294174, 0.0130071, 0.0106415, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8uvtq"]
+font_color = Color(0.00296602, 0.0168986, 0.0159884, 1)
 
 [node name="main" type="Node2D"]
 script = ExtResource("1_n5xmq")
 
 [node name="World" parent="." instance=ExtResource("1_5geho")]
 position = Vector2(3, 1)
+
+[node name="Rabbit" parent="World/Enviroment" index="0" node_paths=PackedStringArray("_enviroment")]
+_enviroment = NodePath("..")
+
+[node name="WorldStats" type="BoxContainer" parent="." node_paths=PackedStringArray("_lionPride", "_enviroment")]
+offset_right = 40.0
+offset_bottom = 40.0
+alignment = 2
+vertical = true
+script = ExtResource("3_hnqk2")
+_lionPride = NodePath("../World/pride")
+_enviroment = NodePath("../World/Enviroment")
+
+[node name="LionPopCont" type="HBoxContainer" parent="WorldStats"]
+layout_mode = 2
+
+[node name="LionPopLabel" type="Label" parent="WorldStats/LionPopCont"]
+layout_mode = 2
+text = "Lion Pop:"
+
+[node name="LionPopValue" type="Label" parent="WorldStats/LionPopCont"]
+layout_mode = 2
+text = "_"
+label_settings = SubResource("LabelSettings_0u8fl")
+
+[node name="RabbitPopCont" type="HBoxContainer" parent="WorldStats"]
+layout_mode = 2
+
+[node name="RabbitPopLabel" type="Label" parent="WorldStats/RabbitPopCont"]
+layout_mode = 2
+text = "Rabbit Pop:"
+horizontal_alignment = 2
+
+[node name="RabbitPopValue" type="Label" parent="WorldStats/RabbitPopCont"]
+layout_mode = 2
+text = "_
+"
+label_settings = SubResource("LabelSettings_8uvtq")
+
+[editable path="World"]
+[editable path="World/Enviroment/Rabbit"]
+[editable path="World/Enviroment/Rabbit/StateMachine"]
+[editable path="World/Enviroment/Rabbit/DetectionArea"]
+[editable path="World/pride"]
+[editable path="World/pride/lionPlayer"]

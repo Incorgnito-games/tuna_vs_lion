@@ -18,7 +18,7 @@ public partial class Chase: State
 	//debug
 	
 	//Signal Fields
-	[Export]private DetectionArea _detectionArea;
+	[Export]private Area2D _detectionArea;
 	private CustomStateSignals _stateTransitionSignal;
 	private float _distanceToTarget;
 	
@@ -62,30 +62,30 @@ public partial class Chase: State
 			var newDir = (targetPosition - _character.GlobalPosition).Normalized();
 			_character.Velocity = newDir * _character.BaseSpeed * _chaseMultiplier;
 
-			GD.Print(_distanceToTarget);
+			// GD.Print(_distanceToTarget);
 		    
 			//free and remove attack npc --> move to attackarea callback
-			if (_distanceToTarget < 5f) 
-			{
-				if (_character.ChaseTargets.Contains(_character.CurrentTarget))
-				{
-					_character.ChaseTargets.Remove(_character.CurrentTarget);
-					_character.CurrentTarget.Free();
-					GD.Print("Chomp!");
-					if (_character.ChaseTargets.Count != 0)
-					{
-						_character.CurrentTarget = _character.GetClosetTarget();
-					}
-					else
-					{
-						_character.CurrentTarget = null;
-						_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "lionidle");
-						
-					}
-				}
+			// if (_distanceToTarget < 5f) 
+			// {
+			// 	if (_character.ChaseTargets.Contains(_character.CurrentTarget))
+			// 	{
+			// 		_character.ChaseTargets.Remove(_character.CurrentTarget);
+			// 		_character.CurrentTarget.Free();
+			// 		GD.Print("Chomp!");
+			// 		if (_character.ChaseTargets.Count != 0)
+			// 		{
+			// 			_character.CurrentTarget = _character.GetClosetTarget();
+			// 		}
+			// 		else
+			// 		{
+			// 			_character.CurrentTarget = null;
+			// 			_stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "lionidle");
+			// 			
+			// 		}
+				// }
 				
 				
-			}
+			// }
 			_character.MoveAndSlide(); 
 	    }
 
@@ -122,6 +122,7 @@ public partial class Chase: State
 
 	    if (_character.ChaseTargets.Count == 0)
 	    {
+		    _character.CurrentTarget = null;
 		    _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "lionidle");
 	    }
 

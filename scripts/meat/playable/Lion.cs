@@ -17,7 +17,7 @@ public partial class Lion: AbstractPlayableMeat
 	[Export] public double Health;
 
 	//signals
-	protected AttackBox _attackBox;
+	protected Area2D _attackBox;
 	
 	//Debug Fields
     
@@ -25,14 +25,6 @@ public partial class Lion: AbstractPlayableMeat
     // Setup
     //**************************
 
-    public override void _Ready()
-    {
-	    base._Ready();
-	    _attackBox = GetNode<AttackBox>("AttackBox");
-	    _attackBox.BodyEntered += OnAttackBoxBodyEntered;
-	    
-    }
-    
     //***************************
     // Getters and Setters
     //***************************
@@ -45,15 +37,5 @@ public partial class Lion: AbstractPlayableMeat
     // Signal callbacks
     //********************************
   
-    //will need to implment own state
-    public void OnAttackBoxBodyEntered(Node2D body)
-    {
-	    // GD.Print($"{_name}==> lets dance {((Lion)body).toString()}!");
-	    //naive and doesnt make sense
-	    if (body is AbstractNonPlayableMeat)
-	    {
-		    MeatValue++;
-		    GD.Print($"{Name} ==> Chomp!");
-	    }
-    }
+ 
 }

@@ -9,51 +9,62 @@ namespace TunaVsLion.scripts;
 
 public partial class Enviroment : Node
 {
-	[Export] public int maxPopulation = 5;
 	private readonly List<AbstractNonPlayableMeat> _landMeat = new List<AbstractNonPlayableMeat>();
-	private static int _currentPop = 0;
+	
+
+	//rabbits
+	[Export] public int maxRabbitPopulation = 5;
+	private static int _currentRabbitPop = 1;
+
+	[Signal]
+	public delegate void UpdateRabbitPopEventHandler(int rabbitPop);	
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		_initiate();	
 	}
-
+	public void EmitSignalsInReady()
+	{
+		EmitSignal(SignalName.UpdateRabbitPop, _currentRabbitPop);
+		
+	}
 	private void _initiate()
 	{
-		for (var i = 0; i < maxPopulation; i++)
+		for (var i = _currentRabbitPop; i < maxRabbitPopulation; i++)
 		{
 			SpawnRabbit();
 		}
-		
+		CallDeferred(nameof(EmitSignalsInReady));
+
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (_currentPop < maxPopulation)
-		{
-			SpawnRabbit();
-		}
 		
 	}
 
 	public void SpawnRabbit()
 	{
 		Rabbit newBunny = (Rabbit)ResourceLoader.Load<PackedScene>("res://scenes/meat/nonplayable/land/rabbit.tscn").Instantiate();
-		newBunny.RabbitName = $"Rabbit-{_currentPop}";
+		newBunny.RabbitName = $"Rabbit-{_currentRabbitPop}";
+		newBunny.Enviroment = this;
 		_landMeat.Add(newBunny);
 		_landMeat.Last().Position = Global.GetRandomPointOnLand();
 		// var meatState = _landMeat[i].GetNode<RandomWalk>("Rabbit/StateMachine/RandomWalk");
 		AddChild(_landMeat.Last());
 		
-		_currentPop++;
+		_currentRabbitPop++;
+		EmitSignal(SignalName.UpdateRabbitPop, _currentRabbitPop);
 	}
 	
 	//*************
 	// Signals
 	//**************
-	public static void OnRabbitEaten(Node node)
+	public void OnRabbitEaten(Node body)
 	{
-		_currentPop--;
+		_currentRabbitPop--;
+		EmitSignal(SignalName.UpdateRabbitPop, _currentRabbitPop);
 	}
+
 }

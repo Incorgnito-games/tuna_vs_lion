@@ -17,7 +17,7 @@ public partial class LionIdle: State
     private bool GetNewPos = false;
 	private CustomStateSignals _stateTransitionSignal;
 
-    [Export]private DetectionArea _detectionArea;
+    [Export]private Area2D _detectionArea;
 
     private Timer randSpeedAdjustementTimer = new Timer();
     private Timer newPosTimer = new Timer();
@@ -30,7 +30,7 @@ public partial class LionIdle: State
         }
         
         _newPos = Pride.GetRandomPointInPrideInfluence(_currentPride);
-        GD.Print(_newPos);
+        // GD.Print(_newPos);
 
         if (_lion is null)
         {
@@ -141,7 +141,7 @@ public partial class LionIdle: State
             GD.Print("Rabbit Spotted");
             _lion.ChaseTargets.Add((AbstractNonPlayableMeat)body);
             string result = "[" + string.Join(", ", _lion.ChaseTargets.Select(node => node.Name)) + "]";
-            GD.Print(result);
+            // GD.Print(result);
             _lion.CurrentTarget = _lion.GetClosetTarget(); 
             GD.Print($"current target ==> {_lion.CurrentTarget.Name}");
             _stateTransitionSignal.EmitSignal(nameof(CustomStateSignals.TransitionState), this, "chase");

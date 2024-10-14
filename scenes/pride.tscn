@@ -28,6 +28,4 @@ position = Vector2(447, 288)
 shape = SubResource("CircleShape2D_x30rw")
 debug_color = Color(0.798825, 0.419343, 0.117152, 0.42)
 
-[connection signal="child_entered_tree" from="." to="." method="OnChildAdded"]
-
 [editable path="lionPlayer"]

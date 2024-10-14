@@ -32,6 +32,9 @@ public partial class Pride : Node2D
 		"puma"
 	};
 	
+	[Signal]
+    public delegate void UpdatePrideSizeEventHandler(int prideSize);
+	
 	
 	
 	//**************************
@@ -39,14 +42,21 @@ public partial class Pride : Node2D
 	//**************************
 	public override void _Ready()
 	{
-		 _prideInfluence =
+		_prideInfluence =
 			 GetNode<CollisionShape2D>("lionPlayer/Area2D/CollisionShape2D");
-		 _prideRadius = ((CircleShape2D)_prideInfluence.Shape).Radius;
+		_prideRadius = ((CircleShape2D)_prideInfluence.Shape).Radius;
 		_Initiate();
+		GD.Print(prideSize);
+		CallDeferred(nameof(EmitSignalsInReady));
+	}
+
+	public void EmitSignalsInReady()
+	{
+		EmitSignal(SignalName.UpdatePrideSize, this.prideSize);
+		
 	}
 	private void _Initiate()
 	{
-		GD.Print(PrideLeader.CharacterName);
 		//Timer Setup
 		positionChangeTimer.SetAutostart(true);
 		positionChangeTimer.SetWaitTime(2);
@@ -74,7 +84,9 @@ public partial class Pride : Node2D
 			
 			AddChild(_lionPride[i]);
 		}
-		
+		//ui interaction
+
+
 	}
 	
 	//*************************
