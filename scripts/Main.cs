@@ -4,16 +4,31 @@ using Godot;
 
 public partial class Main : Node2D
 {
+	private Label _meatMeter;
+	private Label _resources;
 	public override void _Ready()
 	{
 		// seed set for debugging
 		GD.Seed(12345);
+		_meatMeter = GetNode<Label>("WorldStats/MeatMeterCont/MeatMeterValue");
+		_resources = GetNode<Label>("WorldStats/ResourceCont/ResourceValue");
+	
+		_meatMeter.Text = Global.MeatMeter.ToString();
+		_resources.Text = Global.Resources.ToString();
 	}
-
+	//************
+	// Mechanics
+	//************
+	public override void _Process(double delta)
+	{
+		//change to signal
+		_meatMeter.Text = Global.MeatMeter.ToString();
+		_resources.Text = Global.Resources.ToString();
+		
+	}
 	public override void _PhysicsProcess(double delta)
 	{
 		var viewPortSize = GetViewportRect().Size;
-	
 		
 		/*
 		 * Wrapping the x and y boundaries

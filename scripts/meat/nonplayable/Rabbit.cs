@@ -76,6 +76,9 @@ public partial class Rabbit : AbstractNonPlayableMeat
 				this.QueueFree();
 				_meatMeter.Text = MeatValue.ToString();
 			}
+
+			Global.Resources++;
+			Global.MeatMeter++;
 			((AbstractPlayableMeat)body).MeatValue++;
 			((AbstractPlayableMeat)body).CurrentTarget = null;
 			if (Enviroment.LandMeat.Remove(this))

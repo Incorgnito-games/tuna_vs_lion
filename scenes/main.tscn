@@ -16,9 +16,6 @@ script = ExtResource("1_n5xmq")
 [node name="World" parent="." instance=ExtResource("1_5geho")]
 position = Vector2(3, 1)
 
-[node name="Rabbit" parent="World/Enviroment" index="0" node_paths=PackedStringArray("_enviroment")]
-_enviroment = NodePath("..")
-
 [node name="WorldStats" type="BoxContainer" parent="." node_paths=PackedStringArray("_lionPride", "_enviroment")]
 offset_right = 40.0
 offset_bottom = 40.0
@@ -54,9 +51,36 @@ text = "_
 "
 label_settings = SubResource("LabelSettings_8uvtq")
 
+[node name="MeatMeterCont" type="HBoxContainer" parent="WorldStats"]
+layout_mode = 2
+
+[node name="MeatMeterLabel" type="Label" parent="WorldStats/MeatMeterCont"]
+layout_mode = 2
+text = "Meat Meter:"
+horizontal_alignment = 2
+
+[node name="MeatMeterValue" type="Label" parent="WorldStats/MeatMeterCont"]
+layout_mode = 2
+text = "_
+"
+label_settings = SubResource("LabelSettings_8uvtq")
+
+[node name="ResourceCont" type="HBoxContainer" parent="WorldStats"]
+layout_mode = 2
+
+[node name="ResourceLabel" type="Label" parent="WorldStats/ResourceCont"]
+layout_mode = 2
+text = "Resources:"
+horizontal_alignment = 2
+
+[node name="ResourceValue" type="Label" parent="WorldStats/ResourceCont"]
+layout_mode = 2
+text = "_
+"
+label_settings = SubResource("LabelSettings_8uvtq")
+
 [editable path="World"]
 [editable path="World/Enviroment/Rabbit"]
-[editable path="World/Enviroment/Rabbit/StateMachine"]
 [editable path="World/Enviroment/Rabbit/DetectionArea"]
 [editable path="World/pride"]
 [editable path="World/pride/lionPlayer"]

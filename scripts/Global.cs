@@ -4,6 +4,8 @@ public class Global
 {
     public static int WORLD_WIDTH = DisplayServer.ScreenGetSize().X;
     public  static int WORLD_HEIGHT = DisplayServer.ScreenGetSize().Y;
+	public static int MeatMeter = 0;
+	public static int Resources = 0;
 
     public static Vector2 GetRandomPointOnLand()
     {
